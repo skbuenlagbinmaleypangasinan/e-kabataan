@@ -1,0 +1,2610 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-brand-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f3e8ff">
+    <title>E-Kabataan Youth Information System - Barangay Buenlag</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#faf5ff',
+                            100: '#f3e8ff',
+                            200: '#e9d5ff',
+                            300: '#d8b4fe',
+                            400: '#c084fc',
+                            500: '#a855f7',
+                            600: '#9333ea',
+                            700: '#7e22ce',
+                            800: '#6b21a8',
+                            900: '#581c87',
+                            950: '#3b0764',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <!-- QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --lilac-50: #faf7ff;
+            --lilac-100: #f3e8ff;
+            --lilac-200: #e9d5ff;
+            --lilac-300: #d8b4fe;
+            --ink: #3b0764;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #faf7ff;
+            color: #4c3a6e;
+            overflow-x: hidden;
+        }
+
+        /* ---------- Animated lilac background + pattern ---------- */
+        .mesh-gradient {
+            position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none;
+            background: linear-gradient(180deg, #fcfaff 0%, #f5ecff 55%, #fdf4ff 100%);
+        }
+        .mesh-gradient .blob {
+            position: absolute; border-radius: 9999px; filter: blur(70px); opacity: .55;
+            animation: blobDrift 22s ease-in-out infinite alternate;
+        }
+        .mesh-gradient .b1 { width: 46vw; height: 46vw; left: -12vw; top: -14vw; background: #d8b4fe; }
+        .mesh-gradient .b2 { width: 40vw; height: 40vw; right: -10vw; top: 10vh; background: #f5d0fe; animation-delay: -6s; }
+        .mesh-gradient .b3 { width: 44vw; height: 44vw; left: 25vw; bottom: -20vw; background: #c4b5fd; animation-delay: -12s; opacity: .45; }
+        .pattern-layer {
+            position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .7;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160' fill='none'%3E%3Ccircle cx='20' cy='24' r='4' fill='%23c4b5fd' fill-opacity='.55'/%3E%3Cpath d='M92 18h12M98 12v12' stroke='%23a855f7' stroke-opacity='.3' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M30 98q6-8 12 0t12 0 12 0' stroke='%23d8b4fe' stroke-opacity='.8' stroke-width='2.5' stroke-linecap='round'/%3E%3Ccircle cx='120' cy='96' r='9' stroke='%23c084fc' stroke-opacity='.35' stroke-width='2'/%3E%3Cpath d='M130 140l7-12 7 12z' fill='%23e9d5ff' fill-opacity='.9'/%3E%3Ccircle cx='70' cy='140' r='2.5' fill='%23a855f7' fill-opacity='.3'/%3E%3Cpath d='M140 40l4 8 8 4-8 4-4 8-4-8-8-4 8-4z' fill='%23f0abfc' fill-opacity='.45'/%3E%3C/svg%3E");
+            background-size: 160px 160px;
+        }
+        .pattern-layer::before {
+            content: ""; position: absolute; inset: 0;
+            background-image: radial-gradient(rgba(168, 85, 247, .16) 1px, transparent 1.4px);
+            background-size: 28px 28px;
+        }
+
+        /* ---------- Cards ---------- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(18px) saturate(1.25);
+            -webkit-backdrop-filter: blur(18px) saturate(1.25);
+            border: 1px solid rgba(168, 85, 247, 0.18);
+            box-shadow: 0 12px 40px -14px rgba(126, 34, 206, 0.22), 0 2px 6px rgba(168, 85, 247, 0.06);
+        }
+        .glass-card-light {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+        }
+        header.glass-card { border-radius: 0; border-width: 0 0 1px 0; position: sticky; }
+        header.glass-card::after {
+            content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+            background: linear-gradient(90deg, #c084fc, #f0abfc, #a78bfa, #c084fc);
+            background-size: 300% 100%; animation: gradShift 8s linear infinite;
+        }
+
+        /* Hero */
+        .hero-surface {
+            position: relative; isolation: isolate;
+            background:
+                radial-gradient(circle at 12% 18%, rgba(255,255,255,.95) 0, transparent 38%),
+                radial-gradient(circle at 92% 88%, rgba(216, 180, 254, .6) 0, transparent 46%),
+                linear-gradient(135deg, #f5ebff 0%, #ffffff 46%, #ead7ff 100%);
+            border: 1px solid rgba(168, 85, 247, .25);
+            box-shadow: 0 28px 60px -26px rgba(126, 34, 206, .38);
+        }
+        .hero-surface::before {
+            content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+            background-image: radial-gradient(rgba(147, 51, 234, .25) 1.2px, transparent 1.5px);
+            background-size: 18px 18px;
+            -webkit-mask-image: linear-gradient(115deg, transparent 30%, #000 100%);
+            mask-image: linear-gradient(115deg, transparent 30%, #000 100%);
+        }
+        .hero-surface::after {
+            content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+            background: repeating-linear-gradient(45deg, rgba(168, 85, 247, .07) 0 2px, transparent 2px 16px);
+            -webkit-mask-image: linear-gradient(0deg, #000 0%, transparent 60%);
+            mask-image: linear-gradient(0deg, #000 0%, transparent 60%);
+        }
+        .hero-ring {
+            position: absolute; border-radius: 9999px; border: 2px dashed rgba(168, 85, 247, .35);
+            animation: spinSlow 40s linear infinite;
+        }
+        .hero-ring.r1 { inset: 0; }
+        .hero-ring.r2 { inset: 38px; border-style: solid; border-color: rgba(192, 132, 252, .3); animation-direction: reverse; animation-duration: 28s; }
+        .hero-core {
+            position: absolute; inset: 78px; border-radius: 9999px;
+            background: linear-gradient(135deg, #a855f7, #e879f9);
+            box-shadow: 0 20px 40px -10px rgba(147, 51, 234, .55);
+            display: flex; align-items: center; justify-content: center; color: #fff; font-size: 2.6rem;
+        }
+        .float-badge {
+            position: absolute; width: 54px; height: 54px; border-radius: 18px; background: #fff;
+            display: flex; align-items: center; justify-content: center; font-size: 1.25rem;
+            box-shadow: 0 14px 28px -10px rgba(126, 34, 206, .4); border: 1px solid #f3e8ff;
+            animation: floaty 6s ease-in-out infinite;
+        }
+        .float-badge.fb1 { top: -6px; left: 40px; color: #9333ea; }
+        .float-badge.fb2 { top: 36px; right: -14px; color: #06b6d4; animation-delay: -1.5s; }
+        .float-badge.fb3 { bottom: 20px; right: 14px; color: #ec4899; animation-delay: -3s; }
+        .float-badge.fb4 { bottom: -8px; left: 56px; color: #f59e0b; animation-delay: -4.5s; }
+        .float-badge.fb5 { top: 108px; left: -22px; color: #7c3aed; animation-delay: -2.2s; }
+
+        .stat-pill {
+            background: rgba(255,255,255,.8); border: 1px solid rgba(168,85,247,.2); border-radius: 18px;
+            padding: .7rem .9rem; box-shadow: 0 10px 24px -14px rgba(126,34,206,.4);
+        }
+
+        /* ---------- Motion helpers ---------- */
+        .animated-gradient { background-size: 220% auto; animation: gradShift 7s ease infinite; }
+        .btn-shine { position: relative; overflow: hidden; }
+        .btn-shine::after {
+            content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%;
+            background: linear-gradient(100deg, transparent, rgba(255,255,255,.45), transparent);
+            transform: skewX(-20deg); animation: shine 3.6s ease-in-out infinite;
+        }
+        .tab-content:not(.hidden) > * { animation: fadeUp .6s cubic-bezier(.2, .8, .2, 1) both; }
+        .tab-content:not(.hidden) > *:nth-child(2) { animation-delay: .07s; }
+        .tab-content:not(.hidden) > *:nth-child(3) { animation-delay: .14s; }
+        .tab-content:not(.hidden) > *:nth-child(4) { animation-delay: .21s; }
+        .post-card { animation: fadeUp .45s ease both; }
+        .step-card { transition: transform .25s ease, box-shadow .25s ease; }
+        .step-card:hover { transform: translateY(-3px); box-shadow: 0 16px 30px -16px rgba(126,34,206,.45); }
+
+        @keyframes blobDrift { from { transform: translate(0,0) scale(1); } to { transform: translate(6vw, 5vh) scale(1.15); } }
+        @keyframes gradShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes floaty { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-14px) rotate(5deg); } }
+        @keyframes spinSlow { to { transform: rotate(360deg); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+        @keyframes shine { 0%, 55% { left: -60%; } 100% { left: 140%; } }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+        }
+
+        /* Active nav icon stays readable on the solid lilac pill */
+        .nav-btn.bg-brand-600 { box-shadow: 0 8px 18px -8px rgba(147, 51, 234, .7); }
+        .nav-btn.bg-brand-600 i, .nav-btn.bg-brand-600 svg { color: #fff; }
+        svg.svg-inline--fa { display: inline-block; vertical-align: -0.125em; }
+
+        /* Form focus */
+        input:focus, textarea:focus, select:focus { box-shadow: 0 0 0 3px rgba(168, 85, 247, .18); }
+        input::placeholder, textarea::placeholder { color: #a79bbd; }
+
+        /* 3D Flip Card Mechanics */
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+
+        /* ID Card Specific White/Lilac Styling */
+        .id-card-surface {
+            background: #ffffff;
+            background-image:
+                radial-gradient(circle at 100% 0%, rgba(243, 232, 255, 0.8) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(233, 213, 255, 0.5) 0%, transparent 40%);
+            border: 2px solid #a855f7;
+            box-shadow: 0 10px 30px -5px rgba(126, 34, 206, 0.3);
+        }
+        .id-watermark {
+            position: absolute; inset: 0;
+            background-image: radial-gradient(#9333ea 0.75px, transparent 0.75px);
+            background-size: 12px 12px; opacity: 0.08; pointer-events: none;
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(243, 232, 255, 0.7); }
+        ::-webkit-scrollbar-thumb { background: rgba(168, 85, 247, 0.45); border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(147, 51, 234, 0.75); }
+
+        @media print {
+            .no-print, .mesh-gradient, .pattern-layer { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; color: black !important; }
+        }
+
+    </style>
+</head>
+<body class="min-h-full flex flex-col antialiased">
+    <!-- Mesh Background -->
+    <div class="mesh-gradient"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+    <div class="pattern-layer"></div>
+
+    <!-- MAIN NAVBAR -->
+    <header class="sticky top-0 z-40 w-full glass-card border-b border-brand-500/20 px-4 lg:px-8 py-3 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-purple-500 to-cyan-400 p-[2px] shadow-lg shadow-brand-500/30">
+                    <div class="w-full h-full bg-white rounded-[10px] flex items-center justify-center">
+                        <i class="fa-solid fa-graduation-cap text-brand-600 text-lg"></i>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-xl lg:text-2xl tracking-tight bg-gradient-to-r from-brand-600 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent font-['Outfit']">
+                        E-KABATAAN
+                    </h1>
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500 font-semibold -mt-1">
+                        Brgy. Buenlag • Binmaley
+                    </p>
+                </div>
+            </div>
+
+            <!-- Desktop Navigation Menu -->
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 bg-brand-50/70 p-1.5 rounded-2xl border border-brand-500/20">
+                <button onclick="switchTab('home')" id="nav-home" class="nav-btn flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-brand-700 transition-all">
+                    <i class="fa-solid fa-house text-brand-600"></i>
+                    <span>Home</span>
+                </button>
+                <button onclick="switchTab('register')" id="nav-register" class="nav-btn flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-brand-700 transition-all">
+                    <i class="fa-solid fa-id-card text-brand-600"></i>
+                    <span>Youth ID Register</span>
+                </button>
+                <button onclick="switchTab('events')" id="nav-events" class="nav-btn flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-brand-700 transition-all">
+                    <i class="fa-solid fa-bullhorn text-brand-600"></i>
+                    <span>Events & Announcements</span>
+                </button>
+                <button onclick="switchTab('corner')" id="nav-corner" class="nav-btn flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-brand-700 transition-all">
+                    <i class="fa-solid fa-comments text-brand-600"></i>
+                    <span>Kabataan Corner</span>
+                </button>
+                <button onclick="switchTab('officials')" id="nav-officials" class="nav-btn flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-brand-700 transition-all">
+                    <i class="fa-solid fa-users text-brand-600"></i>
+                    <span>SK Officials</span>
+                </button>
+                <button onclick="switchTab('admin')" id="nav-admin" class="nav-btn flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-brand-700 transition-all bg-brand-500/10 border border-brand-500/30">
+                    <i class="fa-solid fa-user-gear text-brand-600"></i>
+                    <span>SK Admin</span>
+                </button>
+            </nav>
+
+            <!-- Status Check Quick Button & Mobile Menu Toggle -->
+            <div class="flex items-center space-x-2">
+                <button onclick="openStatusModal()" class="hidden sm:flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-brand-100 hover:bg-brand-200 text-brand-700 border border-brand-500/30 transition shadow-md">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Check ID Status</span>
+                </button>
+                
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl bg-violet-50 text-slate-600 hover:text-brand-700 border border-brand-500/20">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden mt-3 pt-3 border-t border-brand-100 space-y-1">
+            <button onclick="switchTab('home')" class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-100">
+                <i class="fa-solid fa-house w-5 text-brand-600"></i>
+                <span>Home</span>
+            </button>
+            <button onclick="switchTab('register')" class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-100">
+                <i class="fa-solid fa-id-card w-5 text-brand-600"></i>
+                <span>Youth ID Register</span>
+            </button>
+            <button onclick="switchTab('events')" class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-100">
+                <i class="fa-solid fa-bullhorn w-5 text-brand-600"></i>
+                <span>Events & Announcements</span>
+            </button>
+            <button onclick="switchTab('corner')" class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-100">
+                <i class="fa-solid fa-comments w-5 text-brand-600"></i>
+                <span>Kabataan Corner</span>
+            </button>
+            <button onclick="switchTab('officials')" class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-100">
+                <i class="fa-solid fa-users w-5 text-brand-600"></i>
+                <span>SK Officials</span>
+            </button>
+            <button onclick="switchTab('admin')" class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-100 bg-brand-500/10 border border-brand-500/20">
+                <i class="fa-solid fa-user-gear w-5 text-brand-600"></i>
+                <span>SK Admin Panel</span>
+            </button>
+            <button onclick="openStatusModal()" class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-sm font-bold text-brand-700 hover:bg-brand-100">
+                <i class="fa-solid fa-magnifying-glass w-5 text-brand-600"></i>
+                <span>Track ID Status</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- CONTENT WRAPPER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
+
+        <!-- ================= PAGE 1: HOME ================= -->
+        <section id="tab-home" class="tab-content space-y-10">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl hero-surface p-6 sm:p-10 lg:p-12 ">
+                <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-brand-600/20 rounded-full filter blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-10 -top-10 w-80 h-80 bg-cyan-500/10 rounded-full filter blur-3xl pointer-events-none"></div>
+
+                <!-- Decorative floating art -->
+                <div class="hidden xl:block absolute right-12 top-1/2 -translate-y-1/2 w-72 h-72 pointer-events-none" aria-hidden="true">
+                    <div class="hero-ring r1"></div>
+                    <div class="hero-ring r2"></div>
+                    <div class="hero-core"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <div class="float-badge fb1"><i class="fa-solid fa-id-card"></i></div>
+                    <div class="float-badge fb2"><i class="fa-solid fa-bullhorn"></i></div>
+                    <div class="float-badge fb3"><i class="fa-solid fa-heart"></i></div>
+                    <div class="float-badge fb4"><i class="fa-solid fa-star"></i></div>
+                    <div class="float-badge fb5"><i class="fa-solid fa-comments"></i></div>
+                </div>
+                <div class="relative z-10 max-w-3xl xl:max-w-2xl space-y-6">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-700 text-xs font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span>Official Portal • Barangay Buenlag SK Council</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-brand-950 font-['Outfit'] leading-tight">
+                        Empowering Youth, <br>
+                        <span class="bg-gradient-to-r from-brand-600 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent animated-gradient">
+                            Digitalizing Buenlag.
+                        </span>
+                    </h1>
+
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                        Welcome to the official E-Kabataan Information & Digital ID Platform. Register your Youth Profile, get verified by the SK Council, generate your official digital ID card, and participate actively in community governance and youth programs!
+                    </p>
+
+                    <!-- Interactive Call To Action Buttons -->
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <button onclick="switchTab('register')" class="btn-shine px-6 py-3.5 rounded-2xl bg-gradient-to-r from-brand-600 to-fuchsia-600 hover:from-brand-500 hover:to-fuchsia-500 text-white font-bold text-sm shadow-xl shadow-brand-600/30 hover:scale-105 active:scale-95 transition-all flex items-center space-x-2">
+                            <i class="fa-solid fa-id-card"></i>
+                            <span>Register for Youth ID</span>
+                        </button>
+
+                        <!-- PROMINENT DIRECT LINK TO KABATAAN CORNER -->
+                        <button onclick="switchTab('corner')" class="px-6 py-3.5 rounded-2xl bg-white/90 hover:bg-brand-100 text-purple-800 border border-purple-500/40 hover:border-purple-400 font-bold text-sm shadow-xl shadow-purple-900/20 hover:scale-105 active:scale-95 transition-all flex items-center space-x-2 group">
+                            <i class="fa-solid fa-comments text-brand-600 group-hover:scale-110 transition-transform"></i>
+                            <span>Visit Kabataan Corner</span>
+                            <i class="fa-solid fa-arrow-right text-xs opacity-70 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+
+                        <button onclick="openStatusModal()" class="px-6 py-3.5 rounded-2xl bg-brand-100/80 hover:bg-brand-200/80 text-slate-700 border border-brand-200 font-semibold text-sm transition flex items-center space-x-2">
+                            <i class="fa-solid fa-magnifying-glass text-brand-600"></i>
+                            <span>Track Status</span>
+                        </button>
+                    </div>
+                    <!-- Live stats -->
+                    <div class="grid grid-cols-3 gap-3 pt-3 max-w-xl">
+                        <div class="stat-pill">
+                            <div id="stat-members" class="text-2xl font-black font-['Outfit'] text-brand-700">0</div>
+                            <div class="text-[10px] uppercase tracking-wider font-bold text-slate-500">Verified Youth</div>
+                        </div>
+                        <div class="stat-pill">
+                            <div id="stat-events" class="text-2xl font-black font-['Outfit'] text-fuchsia-600">0</div>
+                            <div class="text-[10px] uppercase tracking-wider font-bold text-slate-500">Events &amp; News</div>
+                        </div>
+                        <div class="stat-pill">
+                            <div id="stat-posts" class="text-2xl font-black font-['Outfit'] text-pink-600">0</div>
+                            <div class="text-[10px] uppercase tracking-wider font-bold text-slate-500">Wall Posts</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Quick Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div onclick="switchTab('register')" class="glass-card p-6 rounded-2xl border border-brand-500/20 hover:border-brand-500/50 transition cursor-pointer group hover:-translate-y-1 duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-600 text-xl group-hover:scale-110 transition-transform mb-4">
+                        <i class="fa-solid fa-id-card"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-brand-950 mb-1">Official Digital ID</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed mb-4">Register your information with Purok selection and photo to obtain your verified SK Youth Identification.</p>
+                    <span class="text-xs font-bold text-brand-700 flex items-center space-x-1">
+                        <span>Register Profile</span>
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </span>
+                </div>
+
+                <!-- Card 2 -->
+                <div onclick="switchTab('events')" class="glass-card p-6 rounded-2xl border border-brand-500/20 hover:border-brand-500/50 transition cursor-pointer group hover:-translate-y-1 duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-600 text-xl group-hover:scale-110 transition-transform mb-4">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-brand-950 mb-1">Youth Events & News</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed mb-4">Stay updated with SK sports leagues, educational webinars, clean-up drives, and youth projects.</p>
+                    <span class="text-xs font-bold text-cyan-700 flex items-center space-x-1">
+                        <span>View Announcements</span>
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </span>
+                </div>
+
+                <!-- Card 3 -->
+                <div onclick="switchTab('corner')" class="glass-card p-6 rounded-2xl border border-brand-500/20 hover:border-brand-500/50 transition cursor-pointer group hover:-translate-y-1 duration-300">
+                    <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-600 text-xl group-hover:scale-110 transition-transform mb-4">
+                        <i class="fa-solid fa-comments"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-brand-950 mb-1">Kabataan Freedom Wall</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed mb-4">Voice your ideas, share youth photos, suggest community projects, and engage with fellow Buenlag youth.</p>
+                    <span class="text-xs font-bold text-purple-700 flex items-center space-x-1">
+                        <span>Join Discussion</span>
+                        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Quick Announcement Preview Banner -->
+            <div id="home-announcements-preview" class="glass-card p-6 rounded-2xl border border-brand-500/20 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-bullhorn text-brand-600 text-lg"></i>
+                        <h2 class="font-bold text-brand-950 text-lg">Latest Announcements</h2>
+                    </div>
+                    <button onclick="switchTab('events')" class="text-xs font-semibold text-brand-700 hover:underline">
+                        View All
+                    </button>
+                </div>
+                <div id="home-events-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamic insert -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: YOUTH ID REGISTRATION ================= -->
+        <section id="tab-register" class="tab-content hidden space-y-8">
+            <div class="max-w-4xl mx-auto glass-card p-6 sm:p-8 rounded-3xl border border-brand-500/30 space-y-6">
+                <!-- Header -->
+                <div class="border-b border-brand-100 pb-5">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-500/10 text-brand-700 text-xs font-semibold mb-2">
+                        <i class="fa-solid fa-file-signature"></i>
+                        <span>SK Youth Profiling Form</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-950 font-['Outfit']">Barangay Buenlag Youth ID Registration</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1">Please fill out all required details accurately. Your submission will be reviewed by the SK Council prior to ID issuance.</p>
+                </div>
+
+                <!-- Registration Form -->
+                <form id="youth-reg-form" onsubmit="handleRegistrationSubmit(event)" class="space-y-6">
+                    
+                    <!-- Personal Info Section -->
+                    <div class="space-y-4">
+                        <h3 class="text-sm font-bold text-brand-700 uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Personal Information</span>
+                        </h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- First Name -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">First Name *</label>
+                                <input type="text" id="reg-fname" required class="w-full bg-white/80 border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-brand-950 focus:outline-none focus:border-brand-500" placeholder="e.g. Juan">
+                            </div>
+
+                            <!-- Middle Name (ADDED EXPLICITLY) -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Middle Name</label>
+                                <input type="text" id="reg-mname" class="w-full bg-white/80 border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-brand-950 focus:outline-none focus:border-brand-500" placeholder="e.g. Dela Cruz (Optional)">
+                            </div>
+
+                            <!-- Last Name -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Last Name *</label>
+                                <input type="text" id="reg-lname" required class="w-full bg-white/80 border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-brand-950 focus:outline-none focus:border-brand-500" placeholder="e.g. Santos">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- Date of Birth -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Date of Birth *</label>
+                                <input type="date" id="reg-dob" required onchange="calculateAge()" class="w-full bg-white/80 border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-brand-950 focus:outline-none focus:border-brand-500">
+                            </div>
+
+                            <!-- Auto Age -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Calculated Age (15-30)</label>
+                                <input type="number" id="reg-age" readonly class="w-full bg-white border border-brand-100 rounded-xl px-3.5 py-2.5 text-sm text-slate-500 cursor-not-allowed font-bold" placeholder="Auto-calculated">
+                            </div>
+
+                            <!-- Gender -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Gender *</label>
+                                <select id="reg-gender" required class="w-full bg-white/80 border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-brand-950 focus:outline-none focus:border-brand-500">
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Non-Binary/Other">Non-Binary / Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- PUROK SELECTION (REVISED Strict Purok 1 to Purok 7) -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Purok (Barangay Buenlag) *</label>
+                                <select id="reg-purok" required class="w-full bg-white/80 border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-brand-950 focus:outline-none focus:border-brand-500 font-medium">
+                                    <option value="">Select Purok</option>
+                                    <option value="Purok 1">Purok 1</option>
+                                    <option value="Purok 2">Purok 2</option>
+                                    <option value="Purok 3">Purok 3</option>
+                                    <option value="Purok 4">Purok 4</option>
+                                    <option value="Purok 5">Purok 5</option>
+                                    <option value="Purok 6">Purok 6</option>
+                                    <option value="Purok 7">Purok 7</option>
+                                </select>
+                            </div>
+
+                            <!-- Contact Mobile -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Contact Number *</label>
+                                <input type="tel" id="reg-phone" required class="w-full bg-white/80 border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-brand-950 focus:outline-none focus:border-brand-500" placeholder="09123456789">
+                            </div>
+
+                            <!-- Youth Classification -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Youth Classification *</label>
+                                <select id="reg-youth-class" required class="w-full bg-white/80 border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-brand-950 focus:outline-none focus:border-brand-500">
+                                    <option value="In-School Youth">In-School Youth (ISY)</option>
+                                    <option value="Out-of-School Youth">Out-of-School Youth (OSY)</option>
+                                    <option value="Working Youth">Working Youth (WY)</option>
+                                    <option value="Youth with Special Needs">Youth with Special Needs (YSN)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Voter Classification -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Voter Status *</label>
+                            <select id="reg-voter-class" required class="w-full bg-white/80 border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-brand-950 focus:outline-none focus:border-brand-500">
+                                <option value="Registered Voter">Registered Voter (COMELEC National/Brgy)</option>
+                                <option value="SK Registered Only">SK Registered Voter Only</option>
+                                <option value="Non-Voter">Non-Voter</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Emergency Contact Section -->
+                    <div class="space-y-4 pt-4 border-t border-brand-100">
+                        <h3 class="text-sm font-bold text-brand-700 uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fa-solid fa-phone-volume"></i>
+                            <span>In Case of Emergency (ICE) Details</span>
+                        </h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">ICE Contact Name *</label>
+                                <input type="text" id="reg-ice-name" required class="w-full bg-white/80 border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-brand-950 focus:outline-none focus:border-brand-500" placeholder="Guardian / Parent Name">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">ICE Contact Phone *</label>
+                                <input type="tel" id="reg-ice-phone" required class="w-full bg-white/80 border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-brand-950 focus:outline-none focus:border-brand-500" placeholder="09987654321">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Relationship *</label>
+                                <input type="text" id="reg-ice-rel" required class="w-full bg-white/80 border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-brand-950 focus:outline-none focus:border-brand-500" placeholder="Parent / Sibling / Spouse">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Emergency Complete Address *</label>
+                            <input type="text" id="reg-ice-address" required class="w-full bg-white/80 border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-brand-950 focus:outline-none focus:border-brand-500" placeholder="House No. / Street, Brgy. Buenlag, Binmaley, Pangasinan">
+                        </div>
+                    </div>
+
+                    <!-- Photo Upload / Camera Capture Section -->
+                    <div class="space-y-4 pt-4 border-t border-brand-100">
+                        <h3 class="text-sm font-bold text-brand-700 uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fa-solid fa-camera"></i>
+                            <span>ID Profile Photo (2x2 Format)</span>
+                        </h3>
+
+                        <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6 bg-brand-50/70 p-4 rounded-2xl border border-brand-100">
+                            <!-- Photo Preview Box (2x2 aspect feel) -->
+                            <div class="relative w-28 h-28 rounded-2xl overflow-hidden bg-white border-2 border-dashed border-brand-500/40 flex items-center justify-center group flex-shrink-0">
+                                <img id="reg-photo-preview" class="w-full h-full object-cover hidden" alt="Profile Preview">
+                                <div id="reg-photo-placeholder" class="text-center p-2">
+                                    <i class="fa-solid fa-user-tie text-2xl text-slate-500"></i>
+                                    <p class="text-[10px] text-slate-500 mt-1">2x2 Photo</p>
+                                </div>
+                            </div>
+
+                            <!-- Input Controls -->
+                            <div class="space-y-2 text-center sm:text-left">
+                                <div class="flex flex-wrap gap-2 justify-center sm:justify-start">
+                                    <label class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-xs font-semibold cursor-pointer transition flex items-center space-x-2">
+                                        <i class="fa-solid fa-upload"></i>
+                                        <span>Upload File</span>
+                                        <input type="file" id="reg-photo-input" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+                                    </label>
+                                    <button type="button" onclick="startCameraModal()" class="px-4 py-2 bg-brand-100 hover:bg-brand-200 text-brand-700 border border-brand-500/30 rounded-xl text-xs font-semibold transition flex items-center space-x-2">
+                                        <i class="fa-solid fa-video"></i>
+                                        <span>Live Camera Snapshot</span>
+                                    </button>
+                                </div>
+                                <p class="text-[11px] text-slate-500">Plain white or light background recommended. Max size 5MB.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Privacy Consent & Terms -->
+                    <div class="bg-brand-950/40 border border-brand-500/30 p-4 rounded-2xl flex items-start space-x-3">
+                        <input type="checkbox" id="reg-consent" required class="mt-1 accent-brand-500 w-4 h-4 rounded cursor-pointer">
+                        <label for="reg-consent" class="text-xs text-slate-600 leading-relaxed cursor-pointer">
+                            I hereby certify that all information provided is true and accurate. I consent to the collection, processing, and storage of my personal data by the Sangguniang Kabataan of Barangay Buenlag in compliance with Republic Act No. 10173 (Data Privacy Act of 2012) and R.A. 10742 (SK Reform Act).
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-2">
+                        <button type="submit" class="w-full py-4 rounded-2xl bg-gradient-to-r from-brand-600 via-purple-600 to-cyan-600 hover:from-brand-500 hover:to-cyan-500 text-white font-extrabold text-base shadow-xl shadow-brand-600/30 hover:scale-[1.01] transition-all flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Submit Registration for Approval</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3: EVENTS & ANNOUNCEMENTS ================= -->
+        <section id="tab-events" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-brand-100 pb-4">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-950 font-['Outfit'] flex items-center space-x-3">
+                        <i class="fa-solid fa-bullhorn text-brand-600"></i>
+                        <span>SK Events & Announcements</span>
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-1">Official updates, youth activities, sports tournaments, and webinars in Brgy. Buenlag.</p>
+                </div>
+            </div>
+
+            <!-- Events List Grid -->
+            <div id="events-feed-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically Rendered -->
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4: KABATAAN CORNER (FREEDOM WALL) ================= -->
+        <section id="tab-corner" class="tab-content hidden space-y-6">
+            <!-- Header + how approval works -->
+            <div class="hero-surface relative overflow-hidden rounded-3xl p-6 sm:p-8">
+                <div class="relative z-10 space-y-5">
+                    <div class="space-y-2 max-w-2xl">
+                        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/80 border border-brand-200 text-brand-700 text-xs font-bold">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <span>Moderated • Verified Youth ID members only</span>
+                        </div>
+                        <h2 class="text-3xl sm:text-4xl font-black text-brand-950 font-['Outfit'] flex items-center gap-3">
+                            <span class="bg-gradient-to-r from-brand-600 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent animated-gradient">Kabataan Corner</span>
+                        </h2>
+                        <p class="text-sm text-slate-600 leading-relaxed">The Buenlag youth Freedom Wall &amp; Forum. Everyone can read. To post, verify your approved Youth ID &mdash; every post is reviewed by the SK Council before it goes live.</p>
+                    </div>
+
+                    <ol class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                        <li class="step-card bg-white/85 border border-brand-100 rounded-2xl p-3.5 flex items-start space-x-3">
+                            <span class="w-8 h-8 shrink-0 rounded-xl bg-gradient-to-br from-brand-500 to-fuchsia-500 text-white text-sm font-extrabold flex items-center justify-center">1</span>
+                            <div><p class="text-xs font-bold text-brand-950">Verify your ID</p><p class="text-[11px] text-slate-500">Youth ID no. + birthdate</p></div>
+                        </li>
+                        <li class="step-card bg-white/85 border border-brand-100 rounded-2xl p-3.5 flex items-start space-x-3">
+                            <span class="w-8 h-8 shrink-0 rounded-xl bg-gradient-to-br from-brand-500 to-fuchsia-500 text-white text-sm font-extrabold flex items-center justify-center">2</span>
+                            <div><p class="text-xs font-bold text-brand-950">Write your post</p><p class="text-[11px] text-slate-500">Add a photo if you like</p></div>
+                        </li>
+                        <li class="step-card bg-white/85 border border-brand-100 rounded-2xl p-3.5 flex items-start space-x-3">
+                            <span class="w-8 h-8 shrink-0 rounded-xl bg-gradient-to-br from-amber-400 to-orange-400 text-white text-sm font-extrabold flex items-center justify-center">3</span>
+                            <div><p class="text-xs font-bold text-brand-950">SK Council review</p><p class="text-[11px] text-slate-500">Approve or decline</p></div>
+                        </li>
+                        <li class="step-card bg-white/85 border border-brand-100 rounded-2xl p-3.5 flex items-start space-x-3">
+                            <span class="w-8 h-8 shrink-0 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-400 text-white text-sm font-extrabold flex items-center justify-center"><i class="fa-solid fa-check text-xs"></i></span>
+                            <div><p class="text-xs font-bold text-brand-950">Live on the wall</p><p class="text-[11px] text-slate-500">Everyone can see it</p></div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
+                <!-- LEFT: verify / compose / my posts -->
+                <div class="lg:col-span-2 space-y-6">
+
+                    <!-- Verification panel (shown until a member verifies) -->
+                    <div id="corner-verify-panel" class="glass-card rounded-3xl p-6 space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-11 h-11 shrink-0 rounded-2xl bg-gradient-to-br from-brand-500 to-fuchsia-500 text-white flex items-center justify-center shadow-lg shadow-brand-500/30">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-brand-950 text-lg font-['Outfit'] leading-tight">Members-only posting</h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Verify your SK-approved Youth ID to share on the Freedom Wall.</p>
+                            </div>
+                        </div>
+                        <form onsubmit="verifyCornerMember(event)" class="space-y-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Youth ID Number</label>
+                                <input type="text" id="cv-id" required autocomplete="off" placeholder="BUEN-2026-1001" class="w-full bg-white border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 font-mono uppercase focus:outline-none focus:border-brand-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Date of Birth</label>
+                                <input type="date" id="cv-dob" required class="w-full bg-white border border-brand-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:border-brand-500">
+                            </div>
+                            <p id="corner-verify-msg" class="hidden text-xs rounded-xl px-3 py-2 border"></p>
+                            <button type="submit" class="btn-shine w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-fuchsia-600 hover:from-brand-500 hover:to-fuchsia-500 text-white font-bold text-sm shadow-lg shadow-brand-600/30 transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Verify &amp; Continue</span>
+                            </button>
+                        </form>
+                        <div class="flex flex-wrap gap-x-4 gap-y-1 text-[11px] font-semibold pt-3 border-t border-brand-100">
+                            <button type="button" onclick="switchTab('register')" class="text-brand-700 hover:underline">No Youth ID yet? Register</button>
+                            <button type="button" onclick="openStatusModal()" class="text-brand-700 hover:underline">Check application status</button>
+                        </div>
+                    </div>
+
+                    <!-- Member panel + composer (shown after verification) -->
+                    <div id="corner-member-panel" class="hidden glass-card rounded-3xl p-6 space-y-4">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex items-center space-x-3 min-w-0">
+                                <img id="cm-photo" class="w-12 h-12 rounded-2xl object-cover border-2 border-brand-300 shadow-md" alt="Member photo">
+                                <div class="min-w-0">
+                                    <div class="flex items-center space-x-1.5">
+                                        <h3 id="cm-name" class="font-bold text-brand-950 truncate"></h3>
+                                        <i class="fa-solid fa-circle-check text-brand-600 text-sm" title="Verified Youth ID Member"></i>
+                                    </div>
+                                    <p id="cm-meta" class="text-[11px] text-slate-500 font-mono truncate"></p>
+                                </div>
+                            </div>
+                            <button type="button" onclick="cornerSignOut()" class="shrink-0 text-[11px] font-bold text-slate-500 hover:text-red-600 flex items-center space-x-1 transition">
+                                <i class="fa-solid fa-right-from-bracket"></i><span>Sign out</span>
+                            </button>
+                        </div>
+
+                        <form onsubmit="handleFreedomWallSubmit(event)" class="space-y-3">
+                            <textarea id="fw-content" required rows="4" maxlength="500" oninput="document.getElementById('fw-count').textContent = this.value.length" placeholder="Share your suggestions, project ideas, or youth community concerns..." class="w-full bg-white border border-brand-200 rounded-xl p-3 text-sm text-slate-900 focus:outline-none focus:border-brand-500 resize-none"></textarea>
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <label class="px-3 py-1.5 bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200 rounded-xl text-xs font-semibold cursor-pointer transition flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-image"></i>
+                                    <span>Attach Photo</span>
+                                    <input type="file" id="fw-photo-input" accept="image/*" class="hidden" onchange="previewFWPhoto(event)">
+                                </label>
+                                <div id="fw-photo-indicator" class="text-xs text-emerald-600 hidden flex items-center space-x-1 font-semibold">
+                                    <i class="fa-solid fa-check"></i><span>Photo attached</span>
+                                </div>
+                                <span class="text-[11px] text-slate-400 font-mono"><span id="fw-count">0</span>/500</span>
+                            </div>
+                            <div class="flex items-start space-x-2 p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-800 leading-relaxed">
+                                <i class="fa-solid fa-hourglass-half mt-0.5"></i>
+                                <span>Your post goes to the SK Council for approval first. Track it under <strong>My Posts</strong> below.</span>
+                            </div>
+                            <button type="submit" class="btn-shine w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-fuchsia-600 hover:from-brand-500 hover:to-fuchsia-500 text-white font-bold text-sm shadow-lg shadow-brand-600/30 transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Submit for Approval</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- My posts tracker -->
+                    <div id="corner-myposts-panel" class="hidden glass-card rounded-3xl p-6 space-y-3">
+                        <h3 class="text-sm font-bold text-brand-950 flex items-center space-x-2">
+                            <i class="fa-solid fa-list-check text-brand-600"></i>
+                            <span>My Posts</span>
+                            <span id="my-posts-count" class="px-2 py-0.5 rounded-full bg-brand-100 text-brand-700 text-[10px] font-extrabold">0</span>
+                        </h3>
+                        <div id="my-posts-container" class="space-y-2.5"></div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: community feed -->
+                <div class="lg:col-span-3">
+                    <div class="glass-card rounded-3xl p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-brand-950 flex items-center space-x-2">
+                                <i class="fa-solid fa-stream text-brand-600"></i>
+                                <span>Community Feed</span>
+                            </h3>
+                            <span id="fw-feed-count" class="px-2.5 py-1 rounded-full bg-brand-100 text-brand-700 text-[11px] font-bold"></span>
+                        </div>
+                        <div id="fw-feed-container" class="space-y-4">
+                            <!-- Dynamic approved posts -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 5: SK OFFICIALS DIRECTORY ================= -->
+        <section id="tab-officials" class="tab-content hidden space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-500/10 text-brand-700 text-xs font-semibold">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Sangguniang Kabataan Leadership</span>
+                </div>
+                <h2 class="text-3xl font-extrabold text-brand-950 font-['Outfit']">Barangay Buenlag SK Officials</h2>
+                <p class="text-xs text-slate-500">Serving the youth with integrity, dynamic leadership, and community excellence.</p>
+            </div>
+
+            <!-- Officials Grid -->
+            <div id="sk-officials-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Dynamically Generated Officials -->
+            </div>
+        </section>
+
+        <!-- ================= PAGE 6: SK ADMIN PANEL ================= -->
+        <section id="tab-admin" class="tab-content hidden space-y-8">
+            <!-- Login Shield Overlay if Not Authenticated -->
+            <div id="admin-login-box" class="max-w-md mx-auto glass-card p-8 rounded-3xl border border-brand-500/30 text-center space-y-5">
+                <div class="w-16 h-16 rounded-2xl bg-brand-500/10 border border-brand-500/30 mx-auto flex items-center justify-center text-brand-600 text-2xl">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-brand-950">SK Admin Authentication</h3>
+                    <p class="text-xs text-slate-500 mt-1">Authorized SK Officials & Chairperson Access Only.</p>
+                </div>
+                <div class="space-y-3">
+                    <input type="password" id="admin-pass-input" placeholder="Enter Admin Password (default: admin123)" class="w-full bg-violet-50 border border-brand-200 rounded-xl px-4 py-3 text-sm text-center text-brand-950 focus:outline-none focus:border-brand-500">
+                    <button onclick="checkAdminLogin()" class="w-full py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm shadow-lg transition">
+                        Authenticate Access
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin Panel Content (Hidden until auth) -->
+            <div id="admin-dashboard-content" class="hidden space-y-8">
+                <!-- Header Stats -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass-card p-6 rounded-2xl border border-brand-500/20">
+                    <div>
+                        <h2 class="text-2xl font-bold text-brand-950 font-['Outfit'] flex items-center space-x-2">
+                            <i class="fa-solid fa-sliders text-brand-600"></i>
+                            <span>SK Management & Approval Dashboard</span>
+                        </h2>
+                        <p class="text-xs text-slate-500">Manage Youth Registrations, Approve Digital IDs & Kabataan Corner Posts, Edit Officials.</p>
+                    </div>
+                    <button onclick="adminLogout()" class="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-600 border border-red-500/30 rounded-xl text-xs font-bold transition">
+                        <i class="fa-solid fa-right-from-bracket mr-1"></i> Lock Admin
+                    </button>
+                </div>
+
+                <!-- Admin Tabs Sub-navigation -->
+                <div class="flex border-b border-brand-100 space-x-4 overflow-x-auto pb-1">
+                    <button onclick="switchAdminTab('pending')" id="subnav-pending" class="px-4 py-2 text-xs font-bold text-brand-600 border-b-2 border-brand-500">
+                        Pending Approvals (<span id="count-pending">0</span>)
+                    </button>
+                    <button onclick="switchAdminTab('approved')" id="subnav-approved" class="px-4 py-2 text-xs font-bold text-slate-500 hover:text-brand-700">
+                        Approved Registrations (<span id="count-approved">0</span>)
+                    </button>
+                    <button onclick="switchAdminTab('officials-edit')" id="subnav-officials-edit" class="px-4 py-2 text-xs font-bold text-slate-500 hover:text-brand-700">
+                        Manage SK Council Officials
+                    </button>
+                    <button onclick="switchAdminTab('events-edit')" id="subnav-events-edit" class="px-4 py-2 text-xs font-bold text-slate-500 hover:text-brand-700">
+                        Manage Announcements
+                    </button>
+                    <button onclick="switchAdminTab('freedom-edit')" id="subnav-freedom-edit" class="px-4 py-2 text-xs font-bold text-slate-500 hover:text-brand-700">
+                        Kabataan Corner Approvals (<span id="count-fw-pending">0</span>)
+                    </button>
+                </div>
+
+                <!-- ADMIN SUBTAB 1: PENDING ID REGISTRATIONS -->
+                <div id="admintab-pending" class="admin-subcontent space-y-4">
+                    <h3 class="text-sm font-bold text-amber-600 flex items-center space-x-2">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>Youth ID Registrations Awaiting SK Approval</span>
+                    </h3>
+                    <div id="pending-list-container" class="space-y-3">
+                        <!-- Dynamic Pending Applications -->
+                    </div>
+                </div>
+
+                <!-- ADMIN SUBTAB 2: APPROVED REGISTRATIONS -->
+                <div id="admintab-approved" class="admin-subcontent hidden space-y-4">
+                    <h3 class="text-sm font-bold text-emerald-600 flex items-center space-x-2">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>Approved Youth Profiles & ID Issuance</span>
+                    </h3>
+                    <div id="approved-list-container" class="space-y-3">
+                        <!-- Dynamic Approved Applications -->
+                    </div>
+                </div>
+
+                <!-- ADMIN SUBTAB 3: MANAGE SK COUNCIL OFFICIALS (POSITION & MEMBERS) -->
+                <div id="admintab-officials-edit" class="admin-subcontent hidden space-y-6">
+                    <div class="glass-card p-6 rounded-2xl border border-brand-500/20 space-y-4">
+                        <h3 class="text-base font-bold text-brand-950 flex items-center space-x-2">
+                            <i class="fa-solid fa-user-plus text-brand-600"></i>
+                            <span>Add / Update SK Council Member</span>
+                        </h3>
+                        <form onsubmit="handleSaveOfficial(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Official Position Title *</label>
+                                <input type="text" id="off-position" required placeholder="e.g. SK Chairperson, SK Kagawad, SK Treasurer" class="w-full bg-violet-50 border border-brand-200 rounded-xl px-3.5 py-2 text-xs text-brand-950">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Full Member Name *</label>
+                                <input type="text" id="off-name" required placeholder="e.g. Hon. Maria Clara Santos" class="w-full bg-violet-50 border border-brand-200 rounded-xl px-3.5 py-2 text-xs text-brand-950">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Committee / Committee Assignment</label>
+                                <input type="text" id="off-committee" placeholder="e.g. Committee on Sports & Education" class="w-full bg-violet-50 border border-brand-200 rounded-xl px-3.5 py-2 text-xs text-brand-950">
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Official Photo Upload</label>
+                                <div class="flex items-center space-x-3">
+                                    <input type="file" id="off-photo-file" accept="image/*" class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:bg-brand-600 file:text-white hover:file:bg-brand-500">
+                                    <span class="text-[11px] text-slate-500">or snapshot image</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-end">
+                                <button type="submit" class="w-full py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-xl shadow-md transition">
+                                    Save Official Member
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Current Officials Editable List -->
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Configured Council Members</h4>
+                        <div id="admin-officials-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <!-- Dynamic list -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADMIN SUBTAB 4: MANAGE ANNOUNCEMENTS & EVENTS -->
+                <div id="admintab-events-edit" class="admin-subcontent hidden space-y-6">
+                    <div class="glass-card p-6 rounded-2xl border border-brand-500/20 space-y-4">
+                        <h3 class="text-base font-bold text-brand-950 flex items-center space-x-2">
+                            <i class="fa-solid fa-bullhorn text-brand-600"></i>
+                            <span>Create Official Announcement / Event</span>
+                        </h3>
+                        <form onsubmit="handleSaveEvent(event)" class="space-y-3">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <input type="text" id="ev-title" required placeholder="Event Title" class="bg-violet-50 border border-brand-200 rounded-xl px-3.5 py-2 text-xs text-brand-950">
+                                <input type="text" id="ev-date" required placeholder="Date / Schedule (e.g. October 28, 2026)" class="bg-violet-50 border border-brand-200 rounded-xl px-3.5 py-2 text-xs text-brand-950">
+                            </div>
+                            <input type="text" id="ev-location" required placeholder="Location / Venue (e.g. Buenlag Covered Court)" class="w-full bg-violet-50 border border-brand-200 rounded-xl px-3.5 py-2 text-xs text-brand-950">
+                            <textarea id="ev-desc" required rows="3" placeholder="Full Details and description of event..." class="w-full bg-violet-50 border border-brand-200 rounded-xl p-3 text-xs text-brand-950 resize-none"></textarea>
+                            
+                            <div class="flex items-center justify-between">
+                                <label class="text-xs text-slate-600 flex items-center space-x-2">
+                                    <span>Banner Image:</span>
+                                    <input type="file" id="ev-image-file" accept="image/*" class="text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-xl file:border-0 file:bg-brand-600 file:text-white">
+                                </label>
+                                <button type="submit" class="px-5 py-2 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-xl transition">
+                                    Publish Announcement
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="admin-events-list" class="space-y-3">
+                        <!-- Dynamic list -->
+                    </div>
+                </div>
+
+                <!-- ADMIN SUBTAB 5: FREEDOM WALL MODERATION -->
+                <div id="admintab-freedom-edit" class="admin-subcontent hidden space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <h3 class="text-sm font-bold text-purple-700 flex items-center space-x-2">
+                            <i class="fa-solid fa-comments"></i>
+                            <span>Kabataan Corner Post Approvals</span>
+                        </h3>
+                        <div id="fw-admin-filters" class="inline-flex p-1 rounded-xl bg-brand-50 border border-brand-100 text-xs font-bold"></div>
+                    </div>
+                    <div id="admin-fw-queue" class="space-y-3">
+                        <!-- Dynamic moderation queue -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-auto relative border-t border-brand-200 bg-gradient-to-b from-white/70 to-brand-100/80 backdrop-blur py-8 px-4 text-center text-xs text-slate-500 space-y-2">
+        <div class="flex items-center justify-center space-x-2 font-bold text-slate-500">
+            <span>Sangguniang Kabataan • Barangay Buenlag, Binmaley, Pangasinan</span>
+        </div>
+        <p>E-Kabataan Youth Information & Digital Identification System &copy; 2026. All rights reserved.</p>
+        <p class="text-[10px] text-slate-500">Compliant with R.A. 10742 (SK Reform Act) and R.A. 10173 (Data Privacy Act of 2012)</p>
+    </footer>
+
+    <!-- ================= MODAL 1: STATUS TRACKING / CHECK ================= -->
+    <div id="status-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-950/45 backdrop-blur-sm hidden">
+        <div class="glass-card max-w-lg w-full p-6 rounded-3xl border border-brand-500/30 space-y-5">
+            <div class="flex items-center justify-between border-b border-brand-100 pb-3">
+                <h3 class="font-bold text-brand-950 text-base flex items-center space-x-2">
+                    <i class="fa-solid fa-magnifying-glass text-brand-600"></i>
+                    <span>Track ID Registration Status</span>
+                </h3>
+                <button onclick="closeStatusModal()" class="text-slate-500 hover:text-brand-700 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <p class="text-xs text-slate-600">Enter your full Application Tracking Code (e.g. TRK-12345) or Youth ID Number to check your status. Names cannot be searched, to protect member privacy.</p>
+
+            <div class="space-y-3">
+                <input type="text" id="status-search-query" placeholder="Tracking Code or Youth ID Number" class="w-full bg-violet-50 border border-brand-200 rounded-xl px-4 py-2.5 text-xs text-brand-950 focus:outline-none focus:border-brand-500">
+                <button onclick="performStatusLookup()" class="w-full py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs shadow-md transition">
+                    Lookup Application
+                </button>
+            </div>
+
+            <!-- Lookup Results Container -->
+            <div id="status-results" class="hidden pt-2 border-t border-brand-100 space-y-3">
+                <!-- Dynamically Inserted Result -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 2: CAMERA SNAPSHOT CAPTURE ================= -->
+    <div id="camera-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-950/45 backdrop-blur-sm hidden">
+        <div class="glass-card max-w-md w-full p-6 rounded-3xl border border-brand-500/30 space-y-4 text-center">
+            <h3 class="font-bold text-brand-950 text-base flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-camera text-brand-600"></i>
+                <span>Capture Profile Snapshot</span>
+            </h3>
+
+            <div class="relative w-full aspect-square bg-white rounded-2xl overflow-hidden border border-brand-100 flex items-center justify-center">
+                <video id="camera-stream" autoplay playsinline class="w-full h-full object-cover"></video>
+                <canvas id="camera-canvas" class="hidden"></canvas>
+            </div>
+
+            <div class="flex items-center justify-center space-x-3">
+                <button onclick="takeSnapshot()" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-xl shadow-lg transition">
+                    Capture Photo
+                </button>
+                <button onclick="closeCameraModal()" class="px-4 py-2.5 bg-brand-100 hover:bg-brand-200 text-slate-600 font-semibold text-xs rounded-xl transition">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL 3: DIGITAL YOUTH ID CARD VIEW & PRINT ================= -->
+    <div id="id-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-950/45 backdrop-blur-md hidden overflow-y-auto">
+        <div class="max-w-xl w-full my-8 glass-card p-6 rounded-3xl border border-brand-500/40 space-y-6 relative">
+            
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b border-brand-100 pb-3 no-print">
+                <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+                    <h3 class="font-bold text-brand-950 text-lg font-['Outfit']">Official Digital SK Youth ID</h3>
+                </div>
+                <button onclick="closeIDModal()" class="text-slate-500 hover:text-brand-700 p-1">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- View Modes & Controls -->
+            <div class="flex flex-wrap items-center justify-between gap-2 no-print bg-brand-50/70 p-2 rounded-2xl border border-brand-100">
+                <div class="flex space-x-2">
+                    <button id="btn-flip-card" onclick="toggleIDFlip()" class="px-3 py-1.5 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-xl transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-rotate"></i>
+                        <span>Flip ID Card</span>
+                    </button>
+                    <button id="btn-both-sides" onclick="toggleBothSidesView()" class="px-3 py-1.5 bg-brand-100 hover:bg-brand-200 text-brand-700 border border-brand-500/30 font-bold text-xs rounded-xl transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-border-all"></i>
+                        <span>View Both Sides</span>
+                    </button>
+                </div>
+                
+                <button onclick="window.print()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-print"></i>
+                    <span>Print / Save PDF</span>
+                </button>
+            </div>
+
+            <!-- SINGLE CARD PERSPECTIVE CONTAINER (FLIPPABLE) -->
+            <div id="single-card-viewport" class="perspective-1000 py-2">
+                <div id="id-card-3d-wrapper" class="transform-style-3d relative w-full aspect-[1.586/1] rounded-2xl transition-transform duration-700">
+                    
+                    <!-- ================= ID CARD FRONT SIDE (WHITE / LILAC REVISED) ================= -->
+                    <div class="id-card-surface backface-hidden absolute inset-0 rounded-2xl p-4 sm:p-5 flex flex-col justify-between overflow-hidden text-slate-900 select-none">
+                        <div class="id-watermark"></div>
+
+                        <!-- Header Bar -->
+                        <div class="flex items-center justify-between border-b-2 border-purple-200 pb-2.5 z-10">
+                            <!-- Brgy / SK Seals -->
+                            <div class="flex items-center space-x-2">
+                                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-purple-700 to-indigo-600 p-[2px] shadow-sm flex-shrink-0">
+                                    <div class="w-full h-full bg-white rounded-full flex items-center justify-center font-extrabold text-[10px] text-purple-800">
+                                        SK
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="text-[11px] font-extrabold uppercase tracking-tight text-purple-950 leading-none">Republic of the Philippines</h4>
+                                    <p class="text-[9px] font-bold text-purple-700 uppercase tracking-wider">Barangay Buenlag • Binmaley, Pangasinan</p>
+                                    <p class="text-[8px] font-black text-slate-500 tracking-widest uppercase">Sangguniang Kabataan Council</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-block px-2 py-0.5 rounded-full bg-purple-100 text-purple-900 font-extrabold text-[9px] border border-purple-300">
+                                    OFFICIAL YOUTH ID
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Card Body (Photo + Details) -->
+                        <div class="grid grid-cols-12 gap-3 my-auto items-center z-10">
+                            <!-- 2x2 Photo Container -->
+                            <div class="col-span-4 flex flex-col items-center">
+                                <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl border-2 border-purple-600 p-1 bg-white shadow-md overflow-hidden relative">
+                                    <img id="card-front-photo" class="w-full h-full object-cover rounded-lg" alt="Youth Profile Photo">
+                                </div>
+                                <span id="card-front-idno" class="mt-1 text-[9px] font-mono font-black text-purple-900 tracking-tight bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
+                                    ID: BUEN-2026-0000
+                                </span>
+                            </div>
+
+                            <!-- Details Column -->
+                            <div class="col-span-8 space-y-1 text-left">
+                                <div>
+                                    <p class="text-[8px] font-bold text-purple-600 uppercase tracking-wider">Full Name</p>
+                                    <h3 id="card-front-fullname" class="text-sm sm:text-base font-black text-slate-900 tracking-tight leading-tight uppercase">
+                                        JUAN DELA CRUZ SANTOS
+                                    </h3>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2 pt-0.5">
+                                    <div>
+                                        <p class="text-[8px] font-bold text-purple-600 uppercase tracking-wider">Purok Address</p>
+                                        <p id="card-front-purok" class="text-[11px] font-extrabold text-slate-800">Purok 1</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[8px] font-bold text-purple-600 uppercase tracking-wider">Date of Birth / Age</p>
+                                        <p id="card-front-dob-age" class="text-[10px] font-bold text-slate-800">Jan 15, 2005 (21)</p>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2 pt-0.5">
+                                    <div>
+                                        <p class="text-[8px] font-bold text-purple-600 uppercase tracking-wider">Youth Category</p>
+                                        <p id="card-front-youthclass" class="text-[10px] font-bold text-slate-800">In-School Youth</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[8px] font-bold text-purple-600 uppercase tracking-wider">Voter Status</p>
+                                        <p id="card-front-voterclass" class="text-[10px] font-bold text-slate-800">Registered Voter</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Footer Strip -->
+                        <div class="flex items-center justify-between border-t border-purple-200 pt-1.5 z-10 text-[8px] text-purple-900 font-semibold">
+                            <span>Status: VERIFIED & ISSUED</span>
+                            <span>Barangay Buenlag Youth Information System</span>
+                        </div>
+                    </div>
+
+                    <!-- ================= ID CARD BACK SIDE (BIGGER QR CODE REVISED) ================= -->
+                    <div class="id-card-surface rotate-y-180 backface-hidden absolute inset-0 rounded-2xl p-4 sm:p-5 flex flex-col justify-between overflow-hidden text-slate-900 select-none">
+                        <div class="id-watermark"></div>
+
+                        <!-- Header -->
+                        <div class="border-b border-purple-200 pb-1 flex justify-between items-center z-10">
+                            <span class="text-[9px] font-extrabold uppercase text-purple-900 tracking-wider">Emergency Info & Digital Verification</span>
+                            <span class="text-[8px] font-bold text-slate-500">NON-TRANSFERABLE</span>
+                        </div>
+
+                        <!-- Back Content Grid: Bigger QR + Emergency Details -->
+                        <div class="grid grid-cols-12 gap-3 items-center my-auto z-10">
+                            <!-- Emergency Details Left -->
+                            <div class="col-span-7 space-y-1.5 text-left">
+                                <div class="bg-purple-50 p-2 rounded-xl border border-purple-200 space-y-0.5">
+                                    <p class="text-[8px] font-bold text-purple-700 uppercase">In Case of Emergency (ICE):</p>
+                                    <p id="card-back-ice-name" class="text-[11px] font-extrabold text-slate-900 uppercase">MARIA SANTOS</p>
+                                    <p id="card-back-ice-rel" class="text-[9px] font-bold text-purple-800">Mother</p>
+                                    <p id="card-back-ice-phone" class="text-[10px] font-mono font-bold text-slate-800">0912-345-6789</p>
+                                    <p id="card-back-ice-addr" class="text-[8px] font-medium text-slate-500 truncate">Purok 1, Brgy. Buenlag, Binmaley</p>
+                                </div>
+
+                                <div class="text-[8px] text-slate-500 leading-tight space-y-0.5">
+                                    <p><strong class="text-purple-900">Barangay Hotline:</strong> (075) 540-0000</p>
+                                    <p><strong class="text-purple-900">SK Office Hotline:</strong> 0999-111-2222</p>
+                                </div>
+                            </div>
+
+                            <!-- BIGGER QR CODE RIGHT SIDE -->
+                            <div class="col-span-5 flex flex-col items-center justify-center space-y-1">
+                                <div class="p-1.5 bg-white rounded-xl border-2 border-purple-500 shadow-md">
+                                    <div id="card-back-qrcode" class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center"></div>
+                                </div>
+                                <p class="text-[8px] font-bold text-purple-900 text-center">Scan to Verify Authenticity</p>
+                            </div>
+                        </div>
+
+                        <!-- Signatures & Authorization Strip -->
+                        <div class="grid grid-cols-2 gap-4 border-t border-purple-200 pt-2 z-10 text-center">
+                            <div>
+                                <div class="h-5 border-b border-slate-400"></div>
+                                <p class="text-[8px] font-bold text-slate-700 mt-0.5 uppercase">Bearer Signature</p>
+                            </div>
+                            <div>
+                                <p class="text-[8px] font-extrabold text-purple-900 uppercase">HON. SK CHAIRPERSON</p>
+                                <p class="text-[7px] font-semibold text-slate-500">SK Chairperson • Brgy. Buenlag</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- DUAL SIDES VIEW CONTAINER (PRINT / BOTH SIDES) -->
+            <div id="both-sides-viewport" class="hidden space-y-4 pt-2">
+                <p class="text-center text-xs font-bold text-brand-700 no-print">Front & Back Sides View</p>
+                <div id="dual-front-slot" class="w-full aspect-[1.586/1]"></div>
+                <div id="dual-back-slot" class="w-full aspect-[1.586/1]"></div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT LOGIC STORAGE & APPLICATION CODE -->
+    <script>
+        /* Fallback artwork when a remote photo cannot load (offline, blocked, or broken link) */
+        const PLACEHOLDER_BANNER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 300' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23e9d5ff'/%3E%3Cstop offset='.55' stop-color='%23f5d0fe'/%3E%3Cstop offset='1' stop-color='%23c4b5fd'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='600' height='300' fill='url%28%23g%29'/%3E%3Ccircle cx='70' cy='60' r='60' fill='%23fff' fill-opacity='.35'/%3E%3Ccircle cx='540' cy='250' r='90' fill='%23fff' fill-opacity='.3'/%3E%3Ccircle cx='480' cy='50' r='24' fill='none' stroke='%23a855f7' stroke-opacity='.4' stroke-width='4'/%3E%3Cpath d='M90 240q20-24 40 0t40 0 40 0' stroke='%23a855f7' stroke-opacity='.4' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Crect x='240' y='95' width='120' height='110' rx='18' fill='%23fff' fill-opacity='.9'/%3E%3Crect x='240' y='95' width='120' height='34' rx='18' fill='%23a855f7'/%3E%3Crect x='240' y='112' width='120' height='17' fill='%23a855f7'/%3E%3Ccircle cx='275' cy='95' r='7' fill='%23f0abfc'/%3E%3Ccircle cx='325' cy='95' r='7' fill='%23f0abfc'/%3E%3Cg fill='%23d8b4fe'%3E%3Crect x='258' y='146' width='22' height='16' rx='4'/%3E%3Crect x='289' y='146' width='22' height='16' rx='4'/%3E%3Crect x='320' y='146' width='22' height='16' rx='4'/%3E%3Crect x='258' y='170' width='22' height='16' rx='4'/%3E%3Crect x='289' y='170' width='22' height='16' rx='4' fill='%23a855f7'/%3E%3C/g%3E%3C/svg%3E";
+        const PLACEHOLDER_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' preserveAspectRatio='xMidYMid slice'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23e9d5ff'/%3E%3Cstop offset='1' stop-color='%23c4b5fd'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='200' height='200' fill='url%28%23g%29'/%3E%3Ccircle cx='100' cy='78' r='36' fill='%23fff' fill-opacity='.9'/%3E%3Cpath d='M30 200c0-42 31-70 70-70s70 28 70 70z' fill='%23fff' fill-opacity='.9'/%3E%3C/svg%3E";
+        function imgFallback(img) {
+            if (!img || img.tagName !== 'IMG' || img.dataset.fallbackApplied) return;
+            img.dataset.fallbackApplied = '1';
+            img.removeAttribute('srcset');
+            img.src = img.dataset.ph === 'banner' ? PLACEHOLDER_BANNER : PLACEHOLDER_AVATAR;
+        }
+        document.addEventListener('error', function (ev) { imgFallback(ev.target); }, true);
+
+        /* Safety net: catch photos that already failed before a handler was attached */
+        function sweepBrokenImages() {
+            document.querySelectorAll('img').forEach(img => {
+                const src = img.getAttribute('src') || '';
+                if (src && !src.startsWith('data:') && img.complete && img.naturalWidth === 0) imgFallback(img);
+            });
+        }
+        let sweepTimer = null;
+        function scheduleSweep() {
+            clearTimeout(sweepTimer);
+            sweepTimer = setTimeout(sweepBrokenImages, 1200);
+            setTimeout(sweepBrokenImages, 4000);
+        }
+        window.addEventListener('DOMContentLoaded', () => {
+            new MutationObserver(scheduleSweep).observe(document.body, { childList: true, subtree: true });
+            scheduleSweep();
+        });
+
+        /* Toast notifications (visible even where the browser blocks alert() popups) */
+        function showToast(message, type) {
+            let box = document.getElementById('toast-box');
+            if (!box) {
+                box = document.createElement('div');
+                box.id = 'toast-box';
+                box.className = 'fixed top-24 left-1/2 -translate-x-1/2 z-[100] w-[92%] max-w-md space-y-2 no-print';
+                document.body.appendChild(box);
+            }
+            const styles = {
+                success: 'border-emerald-300 text-emerald-800',
+                error: 'border-red-300 text-red-700',
+                info: 'border-brand-300 text-brand-950'
+            };
+            const icons = { success: 'fa-circle-check text-emerald-500', error: 'fa-circle-exclamation text-red-500', info: 'fa-circle-info text-brand-600' };
+            const t = type || (/incorrect|could not|not match|full|denied|please|error/i.test(message) ? 'error' : /success|submitted|added|published|saved|deleted/i.test(message) ? 'success' : 'info');
+            const el = document.createElement('div');
+            el.className = `bg-white/95 backdrop-blur border ${styles[t]} rounded-2xl shadow-2xl shadow-brand-600/25 px-4 py-3 text-xs font-semibold flex items-start space-x-2.5 cursor-pointer`;
+            el.style.animation = 'fadeUp .35s ease both';
+            el.innerHTML = `<i class="fa-solid ${icons[t]} mt-0.5"></i><span class="whitespace-pre-line leading-relaxed"></span>`;
+            el.lastChild.textContent = String(message);
+            el.onclick = () => el.remove();
+            box.appendChild(el);
+            setTimeout(() => el.remove(), Math.min(14000, Math.max(4000, String(message).length * 70)));
+        }
+        window.alert = function (msg) { showToast(msg); };
+        window.addEventListener('error', function (e) {
+            if (e.target && e.target !== window) return;   // ignore broken-image events
+            showToast('Something went wrong: ' + (e.message || 'unknown error'), 'error');
+        });
+        window.addEventListener('unhandledrejection', function (e) {
+            showToast('Something went wrong: ' + ((e.reason && e.reason.message) || e.reason || 'unknown error'), 'error');
+        });
+
+        /* Read an image file and shrink it so it fits in browser storage */
+        function readImageFile(file, maxDim, doneCb) {
+            let finished = false;
+            const done = (v) => { if (finished) return; finished = true; clearTimeout(timer); doneCb(v); };
+            const timer = setTimeout(() => done(null), 8000);
+            try {
+                const reader = new FileReader();
+                reader.onerror = () => done(null);
+                reader.onload = function (ev) {
+                    const raw = ev.target.result;
+                    const img = new Image();
+                    img.onload = function () {
+                        try {
+                            const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+                            const c = document.createElement('canvas');
+                            c.width = Math.max(1, Math.round(img.width * scale));
+                            c.height = Math.max(1, Math.round(img.height * scale));
+                            c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+                            done(c.toDataURL('image/jpeg', 0.82));
+                        } catch (err) { done(raw.length < 1500000 ? raw : null); }
+                    };
+                    img.onerror = () => done(raw.length < 1500000 ? raw : null);
+                    img.src = raw;
+                };
+                reader.readAsDataURL(file);
+            } catch (err) { done(null); }
+        }
+
+        /* Global State Variables & LocalStorage Initialization */
+        const APP_STORAGE_KEY = 'EKabataan_Buenlag_DB_v2';
+
+        let appData = {
+            registrations: [],
+            officials: [],
+            events: [],
+            freedomWall: []
+        };
+
+        let isCardFlipped = false;
+        let isBothSidesView = false;
+        let activeCameraStream = null;
+
+        // Default initial data
+        function seedInitialData() {
+            return {
+                registrations: [
+                    {
+                        id: 'BUEN-2026-1001',
+                        trackingCode: 'TRK-89210',
+                        fname: 'Juan',
+                        mname: 'Dela Cruz',
+                        lname: 'Santos',
+                        dob: '2004-05-14',
+                        age: 22,
+                        gender: 'Male',
+                        purok: 'Purok 1',
+                        phone: '09171234567',
+                        youthClass: 'In-School Youth',
+                        voterClass: 'Registered Voter',
+                        iceName: 'Maria Santos',
+                        icePhone: '09189876543',
+                        iceRel: 'Mother',
+                        iceAddr: 'Purok 1, Brgy. Buenlag, Binmaley, Pangasinan',
+                        photoUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80',
+                        status: 'Approved', // Approved / Pending / Rejected
+                        timestamp: '2026-10-10 10:30 AM'
+                    },
+                    {
+                        id: 'BUEN-2026-1002',
+                        trackingCode: 'TRK-44129',
+                        fname: 'Angelica',
+                        mname: 'Reyes',
+                        lname: 'Bautista',
+                        dob: '2006-08-22',
+                        age: 20,
+                        gender: 'Female',
+                        purok: 'Purok 3',
+                        phone: '09201112222',
+                        youthClass: 'In-School Youth',
+                        voterClass: 'SK Registered Only',
+                        iceName: 'Roberto Bautista',
+                        icePhone: '09203334444',
+                        iceRel: 'Father',
+                        iceAddr: 'Purok 3, Brgy. Buenlag, Binmaley, Pangasinan',
+                        photoUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&auto=format&fit=crop&q=80',
+                        status: 'Pending',
+                        timestamp: '2026-10-18 02:15 PM'
+                    }
+                ],
+                officials: [
+                    {
+                        id: 'off-1',
+                        position: 'SK Chairperson',
+                        name: 'Hon. Mark Kenneth Perez',
+                        committee: 'Over-all Leadership & Youth Governance',
+                        photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80'
+                    },
+                    {
+                        id: 'off-2',
+                        position: 'SK Kagawad (Councilor)',
+                        name: 'Hon. Alyssa Marie Fernandez',
+                        committee: 'Committee on Education & Culture',
+                        photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80'
+                    },
+                    {
+                        id: 'off-3',
+                        position: 'SK Kagawad (Councilor)',
+                        name: 'Hon. John Paul Soriano',
+                        committee: 'Committee on Sports Development',
+                        photoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80'
+                    },
+                    {
+                        id: 'off-4',
+                        position: 'SK Treasurer',
+                        name: 'Hon. Clarisse Mae Samson',
+                        committee: 'Financial Operations & Asset Custody',
+                        photoUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80'
+                    }
+                ],
+                events: [
+                    {
+                        id: 'ev-1',
+                        title: 'Buenlag Inter-Purok Youth Basketball & Volleyball League 2026',
+                        date: 'October 28, 2026 • 4:00 PM',
+                        location: 'Barangay Buenlag Covered Court',
+                        desc: 'Calling all youth athletes from Purok 1 to Purok 7! Registration is open. Bring your verified Youth Digital ID to participate.',
+                        imageUrl: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=600&auto=format&fit=crop&q=80',
+                        timestamp: '2026-10-15'
+                    },
+                    {
+                        id: 'ev-2',
+                        title: 'Digital Literacy & AI Skills Workshop for Buenlag Youth',
+                        date: 'November 05, 2026 • 9:00 AM',
+                        location: 'Buenlag Session Hall',
+                        desc: 'Free laptop and internet access provided. Learn practical digital skills, photo editing, and software basics.',
+                        imageUrl: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&auto=format&fit=crop&q=80',
+                        timestamp: '2026-10-17'
+                    }
+                ],
+                freedomWall: [
+                    {
+                        id: 'fw-1',
+                        author: 'Miggy S.',
+                        purok: 'Purok 2',
+                        content: 'Super excited for the upcoming basketball tournament! Thank you SK Council for continuously repairing the court lights!',
+                        photoUrl: '',
+                        status: 'Approved',
+                        timestamp: '2 hours ago'
+                    }
+                ]
+            };
+        }
+
+        function loadAppData() {
+            const stored = localStorage.getItem(APP_STORAGE_KEY);
+            if (stored) {
+                try {
+                    appData = JSON.parse(stored);
+                } catch(e) {
+                    appData = seedInitialData();
+                }
+            } else {
+                appData = seedInitialData();
+                saveAppData();
+            }
+        }
+
+        function saveAppData() {
+            try {
+                localStorage.setItem(APP_STORAGE_KEY, JSON.stringify(appData));
+                return true;
+            } catch (err) {
+                console.warn('Storage error', err);
+                alert('Your browser storage is full, so this could not be saved. Try a smaller photo.');
+                return false;
+            }
+        }
+
+        /* TAB NAVIGATION LOGIC */
+        function switchTab(tabId) {
+            // Hide all contents
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            // Remove active styling on nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white');
+                btn.classList.add('text-slate-600');
+            });
+
+            // Show selected tab
+            const target = document.getElementById(`tab-${tabId}`);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+
+            // Highlight nav
+            const navBtn = document.getElementById(`nav-${tabId}`);
+            if (navBtn) {
+                navBtn.classList.add('bg-brand-600', 'text-white');
+                navBtn.classList.remove('text-slate-600');
+            }
+
+            // Refresh tab views
+            if (tabId === 'home') { renderHomeEvents(); updateHomeStats(); }
+            if (tabId === 'events') renderEventsFeed();
+            if (tabId === 'corner') renderCornerTab();
+            if (tabId === 'officials') renderSKOfficials();
+            if (tabId === 'admin') updateAdminDashboardView();
+
+            // Close mobile menu
+            document.getElementById('mobile-menu').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        /* AUTO AGE CALCULATION */
+        function calculateAge() {
+            const dobVal = document.getElementById('reg-dob').value;
+            if (!dobVal) return;
+            const birthDate = new Date(dobVal);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            document.getElementById('reg-age').value = age;
+        }
+
+        /* PHOTO UPLOAD HANDLERS */
+        let currentUploadedPhotoBase64 = '';
+
+        function handlePhotoUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            readImageFile(file, 600, url => {
+                if (!url) { showToast('Could not read that photo. Please try a different image.', 'error'); return; }
+                currentUploadedPhotoBase64 = url;
+                const imgPreview = document.getElementById('reg-photo-preview');
+                const placeholder = document.getElementById('reg-photo-placeholder');
+                imgPreview.src = currentUploadedPhotoBase64;
+                imgPreview.classList.remove('hidden');
+                placeholder.classList.add('hidden');
+            });
+        }
+
+        /* LIVE CAMERA CAPTURE */
+        function startCameraModal() {
+            document.getElementById('camera-modal').classList.remove('hidden');
+            const video = document.getElementById('camera-stream');
+
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        activeCameraStream = stream;
+                        video.srcObject = stream;
+                    })
+                    .catch(err => {
+                        alert("Unable to access camera device. Please upload a photo file instead.");
+                        closeCameraModal();
+                    });
+            }
+        }
+
+        function closeCameraModal() {
+            if (activeCameraStream) {
+                activeCameraStream.getTracks().forEach(track => track.stop());
+                activeCameraStream = null;
+            }
+            document.getElementById('camera-modal').classList.add('hidden');
+        }
+
+        function takeSnapshot() {
+            const video = document.getElementById('camera-stream');
+            const canvas = document.getElementById('camera-canvas');
+            canvas.width = video.videoWidth || 300;
+            canvas.height = video.videoHeight || 300;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            currentUploadedPhotoBase64 = canvas.toDataURL('image/jpeg', 0.8);
+            const imgPreview = document.getElementById('reg-photo-preview');
+            const placeholder = document.getElementById('reg-photo-placeholder');
+            imgPreview.src = currentUploadedPhotoBase64;
+            imgPreview.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+
+            closeCameraModal();
+        }
+
+        /* REGISTRATION FORM SUBMISSION & DUPLICATE CHECK */
+        function handleRegistrationSubmit(e) {
+            e.preventDefault();
+
+            const fname = document.getElementById('reg-fname').value.trim();
+            const mname = document.getElementById('reg-mname').value.trim();
+            const lname = document.getElementById('reg-lname').value.trim();
+            const age = parseInt(document.getElementById('reg-age').value) || 0;
+
+            if (age < 15 || age > 30) {
+                alert("Notice: Sangguniang Kabataan profiling qualifies youth aged 15 to 30 years old.");
+            }
+
+            // DUPLICATE NAME CHECK
+            const duplicate = appData.registrations.find(r => 
+                r.fname.toLowerCase() === fname.toLowerCase() && 
+                r.lname.toLowerCase() === lname.toLowerCase()
+            );
+
+            if (duplicate) {
+                alert(`Notice: A profile under the name "${fname} ${lname}" already exists in the system database (Tracking: ${duplicate.trackingCode}). Please track your status or contact SK Admin.`);
+                return;
+            }
+
+            const trackingCode = 'TRK-' + Math.floor(10000 + Math.random() * 90000);
+            const idNumber = 'BUEN-2026-' + Math.floor(1000 + Math.random() * 9000);
+
+            const defaultFallbackPhoto = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300&auto=format&fit=crop&q=80';
+
+            const newRegistration = {
+                id: idNumber,
+                trackingCode: trackingCode,
+                fname: fname,
+                mname: mname,
+                lname: lname,
+                dob: document.getElementById('reg-dob').value,
+                age: age,
+                gender: document.getElementById('reg-gender').value,
+                purok: document.getElementById('reg-purok').value,
+                phone: document.getElementById('reg-phone').value,
+                youthClass: document.getElementById('reg-youth-class').value,
+                voterClass: document.getElementById('reg-voter-class').value,
+                iceName: document.getElementById('reg-ice-name').value,
+                icePhone: document.getElementById('reg-ice-phone').value,
+                iceRel: document.getElementById('reg-ice-rel').value,
+                iceAddr: document.getElementById('reg-ice-address').value,
+                photoUrl: currentUploadedPhotoBase64 || defaultFallbackPhoto,
+                status: 'Pending', // Mandatory approval workflow
+                timestamp: new Date().toLocaleString()
+            };
+
+            appData.registrations.unshift(newRegistration);
+            saveAppData();
+
+            // Celebration effect
+            confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
+
+            alert(`Registration Submitted Successfully!\n\nYour Application Tracking Code is: ${trackingCode}\n\nStatus: PENDING APPROVAL\nYour profile is now queued for SK Council review. You can generate your Digital Youth ID once approved.`);
+
+            // Reset Form
+            document.getElementById('youth-reg-form').reset();
+            document.getElementById('reg-photo-preview').classList.add('hidden');
+            document.getElementById('reg-photo-placeholder').classList.remove('hidden');
+            currentUploadedPhotoBase64 = '';
+
+            // Open status modal pre-filled
+            openStatusModal(trackingCode);
+        }
+
+        /* STATUS CHECK MODAL */
+        function openStatusModal(prefillQuery = '') {
+            document.getElementById('status-modal').classList.remove('hidden');
+            if (prefillQuery) {
+                document.getElementById('status-search-query').value = prefillQuery;
+                performStatusLookup();
+            }
+        }
+
+        function closeStatusModal() {
+            document.getElementById('status-modal').classList.add('hidden');
+        }
+
+        function performStatusLookup() {
+            const query = document.getElementById('status-search-query').value.trim().toLowerCase();
+            const resultsContainer = document.getElementById('status-results');
+            resultsContainer.classList.remove('hidden');
+
+            if (!query) {
+                resultsContainer.innerHTML = `<p class="text-xs text-red-500">Please enter your tracking code or Youth ID number.</p>`;
+                return;
+            }
+
+            // Exact match only: no partial or name searching
+            const found = appData.registrations.filter(r =>
+                r.trackingCode.toLowerCase() === query || r.id.toLowerCase() === query
+            );
+
+            if (found.length === 0) {
+                resultsContainer.innerHTML = `<p class="text-xs text-amber-600">No application found. Please enter the complete tracking code (e.g. TRK-12345) or Youth ID number exactly as issued.</p>`;
+                return;
+            }
+
+            let html = '';
+            found.forEach(item => {
+                const statusColor = item.status === 'Approved' ? 'text-emerald-600 bg-emerald-500/10 border-emerald-500/30' :
+                                    item.status === 'Rejected' ? 'text-red-500 bg-red-500/10 border-red-500/30' :
+                                    'text-amber-600 bg-amber-500/10 border-amber-500/30';
+                const sid = escapeHTML(item.id);
+
+                html += `
+                    <div class="bg-white/90 p-4 rounded-2xl border border-brand-100 space-y-2 text-left">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-brand-950 uppercase">${escapeHTML(item.fname)} ${item.mname ? escapeHTML(item.mname) + ' ' : ''}${escapeHTML(item.lname)}</span>
+                            <span class="px-2.5 py-0.5 rounded-full border text-[10px] font-extrabold ${statusColor}">${item.status.toUpperCase()}</span>
+                        </div>
+                        <p class="text-[11px] text-slate-500">Purok: <strong class="text-slate-700">${escapeHTML(item.purok)}</strong> • Tracking Code: <strong class="font-mono text-brand-700">${escapeHTML(item.trackingCode)}</strong></p>
+
+                        ${item.status === 'Approved' ? `
+                            <div class="mt-2 p-3 rounded-xl bg-brand-50 border border-brand-100 space-y-2">
+                                <p class="text-[11px] text-slate-600"><i class="fa-solid fa-lock text-brand-600 mr-1"></i>To protect your personal and emergency contact details, enter your date of birth to view your ID card.</p>
+                                <div class="flex gap-2">
+                                    <input type="date" id="unlock-dob-${sid}" class="flex-1 min-w-0 bg-white border border-brand-200 rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-brand-500">
+                                    <button onclick="unlockDigitalID('${sid}')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-brand-600 to-fuchsia-600 hover:from-brand-500 hover:to-fuchsia-500 text-white font-bold text-xs shadow-md transition flex items-center space-x-1.5">
+                                        <i class="fa-solid fa-id-card"></i><span>View ID</span>
+                                    </button>
+                                </div>
+                                <p id="unlock-msg-${sid}" class="hidden text-[11px] text-red-600"></p>
+                            </div>
+                        ` : item.status === 'Rejected' ? `
+                            <div class="p-2 rounded-xl bg-red-50 border border-red-100 text-[11px] text-red-600 flex items-center space-x-2">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                <span>This application was not approved. Please contact the SK Council for assistance.</span>
+                            </div>
+                        ` : `
+                            <div class="p-2 rounded-xl bg-amber-50 border border-amber-100 text-[11px] text-slate-600 flex items-center space-x-2">
+                                <i class="fa-solid fa-hourglass-half text-amber-600"></i>
+                                <span>Your application is currently pending SK Admin verification. Please check back later.</span>
+                            </div>
+                        `}
+                    </div>
+                `;
+            });
+
+            resultsContainer.innerHTML = html;
+        }
+
+        /* Birthdate gate before a member's digital ID (which includes emergency contact) is shown */
+        const idUnlockFailures = {};
+        function unlockDigitalID(regId) {
+            const msg = document.getElementById(`unlock-msg-${regId}`);
+            const input = document.getElementById(`unlock-dob-${regId}`);
+            const reg = appData.registrations.find(r => r.id === regId);
+            const fail = idUnlockFailures[regId] || { count: 0, until: 0 };
+
+            const showMsg = text => { msg.textContent = text; msg.classList.remove('hidden'); };
+
+            if (Date.now() < fail.until) {
+                showMsg('Too many incorrect attempts. Please wait a minute and try again.');
+                return;
+            }
+            if (!reg || !input.value) {
+                showMsg('Please enter your date of birth.');
+                return;
+            }
+            if (reg.dob !== input.value) {
+                fail.count++;
+                if (fail.count >= 5) { fail.until = Date.now() + 60000; fail.count = 0; }
+                idUnlockFailures[regId] = fail;
+                showMsg('Date of birth does not match our records.');
+                return;
+            }
+            idUnlockFailures[regId] = { count: 0, until: 0 };
+            input.value = '';
+            msg.classList.add('hidden');
+            renderAndShowDigitalID(regId);
+        }
+
+        /* GENERATE & RENDER DIGITAL ID CARD (WHITE & LILAC REVISED) */
+        function renderAndShowDigitalID(regId) {
+            closeStatusModal();
+            const record = appData.registrations.find(r => r.id === regId);
+            if (!record) return;
+
+            // Populate Front Side
+            document.getElementById('card-front-fullname').innerText = `${record.fname} ${record.mname ? record.mname + ' ' : ''}${record.lname}`;
+            document.getElementById('card-front-purok').innerText = record.purok;
+            document.getElementById('card-front-dob-age').innerText = `${record.dob} (${record.age} yrs)`;
+            document.getElementById('card-front-youthclass').innerText = record.youthClass;
+            document.getElementById('card-front-voterclass').innerText = record.voterClass;
+            document.getElementById('card-front-idno').innerText = `ID: ${record.id}`;
+            document.getElementById('card-front-photo').src = record.photoUrl;
+
+            // Populate Back Side
+            document.getElementById('card-back-ice-name').innerText = record.iceName;
+            document.getElementById('card-back-ice-rel').innerText = record.iceRel;
+            document.getElementById('card-back-ice-phone').innerText = record.icePhone;
+            document.getElementById('card-back-ice-addr').innerText = record.iceAddr;
+
+            // Generate Bigger QR Code
+            const qrContainer = document.getElementById('card-back-qrcode');
+            qrContainer.innerHTML = '';
+            new QRCode(qrContainer, {
+                text: `BUENLAG-SK-VERIFIED|ID:${record.id}`,
+                width: 110,
+                height: 110,
+                colorDark: "#6b21a8",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // Reset Flip & View Mode
+            isCardFlipped = false;
+            isBothSidesView = false;
+            document.getElementById('id-card-3d-wrapper').classList.remove('rotate-y-180');
+            document.getElementById('single-card-viewport').classList.remove('hidden');
+            document.getElementById('both-sides-viewport').classList.add('hidden');
+
+            document.getElementById('id-modal').classList.remove('hidden');
+        }
+
+        function closeIDModal() {
+            document.getElementById('id-modal').classList.add('hidden');
+        }
+
+        function toggleIDFlip() {
+            if (isBothSidesView) toggleBothSidesView();
+            isCardFlipped = !isCardFlipped;
+            const wrapper = document.getElementById('id-card-3d-wrapper');
+            if (isCardFlipped) {
+                wrapper.classList.add('rotate-y-180');
+            } else {
+                wrapper.classList.remove('rotate-y-180');
+            }
+        }
+
+        function toggleBothSidesView() {
+            isBothSidesView = !isBothSidesView;
+            const singleViewport = document.getElementById('single-card-viewport');
+            const dualViewport = document.getElementById('both-sides-viewport');
+
+            if (isBothSidesView) {
+                singleViewport.classList.add('hidden');
+                dualViewport.classList.remove('hidden');
+
+                // Clone surfaces into dual slots
+                const cardFront = document.querySelector('#id-card-3d-wrapper > div:nth-child(1)').cloneNode(true);
+                const cardBack = document.querySelector('#id-card-3d-wrapper > div:nth-child(2)').cloneNode(true);
+
+                cardFront.classList.remove('absolute');
+                cardBack.classList.remove('rotate-y-180', 'absolute');
+
+                document.getElementById('dual-front-slot').innerHTML = '';
+                document.getElementById('dual-back-slot').innerHTML = '';
+
+                document.getElementById('dual-front-slot').appendChild(cardFront);
+                document.getElementById('dual-back-slot').appendChild(cardBack);
+            } else {
+                singleViewport.classList.remove('hidden');
+                dualViewport.classList.add('hidden');
+            }
+        }
+
+        /* ================= KABATAAN CORNER: VERIFIED POSTING + APPROVAL ================= */
+        const CORNER_SESSION_KEY = 'EKab_corner_member';
+        const LIKED_KEY = 'EKab_liked_posts';
+        let cornerMemberId = null;
+        let currentFWPhotoBase64 = '';
+        let adminFWFilter = 'Pending';
+
+        function escapeHTML(str) {
+            return String(str ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        function formatPostTime(p) {
+            if (!p.createdAt) return p.timestamp || '';
+            const s = Math.floor((Date.now() - p.createdAt) / 1000);
+            if (s < 60) return 'Just now';
+            const m = Math.floor(s / 60);
+            if (m < 60) return `${m}m ago`;
+            const h = Math.floor(m / 60);
+            if (h < 24) return `${h}h ago`;
+            const d = Math.floor(h / 24);
+            if (d < 7) return `${d}d ago`;
+            return new Date(p.createdAt).toLocaleDateString();
+        }
+
+        function getLikedSet() {
+            try { return new Set(JSON.parse(localStorage.getItem(LIKED_KEY) || '[]')); } catch (e) { return new Set(); }
+        }
+
+        /* Returns the verified, APPROVED registration for this browser session (or null) */
+        function getCornerMember() {
+            if (!cornerMemberId) return null;
+            const reg = appData.registrations.find(r => r.id === cornerMemberId);
+            if (!reg || reg.status !== 'Approved') {
+                cornerMemberId = null;
+                try { sessionStorage.removeItem(CORNER_SESSION_KEY); } catch (e) {}
+                return null;
+            }
+            return reg;
+        }
+
+        function showVerifyMessage(type, html) {
+            const el = document.getElementById('corner-verify-msg');
+            const styles = {
+                error: 'bg-red-50 border-red-200 text-red-700',
+                warn: 'bg-amber-50 border-amber-200 text-amber-800',
+                ok: 'bg-emerald-50 border-emerald-200 text-emerald-700'
+            };
+            el.className = `text-xs rounded-xl px-3 py-2 border ${styles[type]}`;
+            el.innerHTML = html;
+        }
+
+        function verifyCornerMember(e) {
+            e.preventDefault();
+            const idNum = document.getElementById('cv-id').value.trim().toUpperCase();
+            const dob = document.getElementById('cv-dob').value;
+            const reg = appData.registrations.find(r => r.id.toUpperCase() === idNum);
+
+            if (!reg || reg.dob !== dob) {
+                showVerifyMessage('error', '<i class="fa-solid fa-circle-xmark mr-1"></i>We could not match that Youth ID number and birthdate. Please check and try again.');
+                return;
+            }
+            if (reg.status === 'Pending') {
+                showVerifyMessage('warn', '<i class="fa-solid fa-hourglass-half mr-1"></i>Your Youth ID is still waiting for SK approval. You can post once it is approved.');
+                return;
+            }
+            if (reg.status !== 'Approved') {
+                showVerifyMessage('error', '<i class="fa-solid fa-ban mr-1"></i>This Youth ID application was not approved, so posting is unavailable. Please contact the SK Council.');
+                return;
+            }
+
+            cornerMemberId = reg.id;
+            try { sessionStorage.setItem(CORNER_SESSION_KEY, reg.id); } catch (err) {}
+            document.getElementById('corner-verify-msg').classList.add('hidden');
+            e.target.reset();
+            confetti({ particleCount: 60, spread: 55, origin: { y: 0.4 }, colors: ['#a855f7', '#d8b4fe', '#f0abfc', '#ffffff'] });
+            renderCornerTab();
+        }
+
+        function cornerSignOut() {
+            cornerMemberId = null;
+            try { sessionStorage.removeItem(CORNER_SESSION_KEY); } catch (e) {}
+            currentFWPhotoBase64 = '';
+            renderCornerTab();
+        }
+
+        function renderCornerTab() {
+            const member = getCornerMember();
+            document.getElementById('corner-verify-panel').classList.toggle('hidden', !!member);
+            document.getElementById('corner-member-panel').classList.toggle('hidden', !member);
+            document.getElementById('corner-myposts-panel').classList.toggle('hidden', !member);
+
+            if (member) {
+                document.getElementById('cm-photo').src = member.photoUrl;
+                document.getElementById('cm-name').textContent = `${member.fname} ${member.lname}`;
+                document.getElementById('cm-meta').textContent = `${member.id} • ${member.purok}`;
+                renderMyPosts();
+            }
+            renderFreedomWallFeed();
+        }
+
+        function previewFWPhoto(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            readImageFile(file, 900, url => {
+                if (!url) { showToast('Could not read that photo. Please try a different image.', 'error'); return; }
+                currentFWPhotoBase64 = url;
+                document.getElementById('fw-photo-indicator').classList.remove('hidden');
+            });
+        }
+
+        function handleFreedomWallSubmit(e) {
+            e.preventDefault();
+            const member = getCornerMember();
+            if (!member) {
+                alert('Please verify your approved Youth ID first.');
+                renderCornerTab();
+                return;
+            }
+            const content = document.getElementById('fw-content').value.trim();
+            if (!content) return;
+
+            const newPost = {
+                id: 'fw-' + Date.now(),
+                authorId: member.id,
+                author: `${member.fname} ${member.lname.charAt(0).toUpperCase()}.`,
+                purok: member.purok,
+                content: content,
+                photoUrl: currentFWPhotoBase64,
+                status: 'Pending',            // must be approved by the SK Council before it is public
+                reviewNote: '',
+                likes: 0,
+                createdAt: Date.now(),
+                timestamp: new Date().toLocaleString()
+            };
+
+            appData.freedomWall.unshift(newPost);
+            if (!saveAppData()) {
+                appData.freedomWall.shift();  // roll back if the browser storage is full
+                return;
+            }
+
+            e.target.reset();
+            document.getElementById('fw-count').textContent = '0';
+            document.getElementById('fw-photo-indicator').classList.add('hidden');
+            currentFWPhotoBase64 = '';
+            confetti({ particleCount: 40, spread: 50, origin: { y: 0.5 }, colors: ['#a855f7', '#f0abfc', '#fbbf24'] });
+            alert('Post submitted!\n\nStatus: PENDING APPROVAL\nThe SK Council will review it first. It will appear on the Freedom Wall once approved.');
+            renderMyPosts();
+        }
+
+        function withdrawMyPost(id) {
+            const member = getCornerMember();
+            const post = appData.freedomWall.find(p => p.id === id);
+            if (!member || !post || post.authorId !== member.id || post.status !== 'Pending') return;
+            if (confirm('Withdraw this post from review?')) {
+                appData.freedomWall = appData.freedomWall.filter(p => p.id !== id);
+                saveAppData();
+                renderMyPosts();
+            }
+        }
+
+        function renderMyPosts() {
+            const member = getCornerMember();
+            const container = document.getElementById('my-posts-container');
+            if (!member) { container.innerHTML = ''; return; }
+
+            const mine = appData.freedomWall.filter(p => p.authorId === member.id);
+            document.getElementById('my-posts-count').textContent = mine.length;
+
+            if (mine.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 py-3 text-center">You haven't posted yet. Share your first idea above!</p>`;
+                return;
+            }
+
+            const chip = {
+                Pending: ['bg-amber-50 text-amber-700 border-amber-200', 'fa-hourglass-half', 'Awaiting SK review'],
+                Approved: ['bg-emerald-50 text-emerald-700 border-emerald-200', 'fa-circle-check', 'Published'],
+                Rejected: ['bg-red-50 text-red-600 border-red-200', 'fa-circle-xmark', 'Not approved']
+            };
+
+            container.innerHTML = mine.map(p => {
+                const [cls, icon, label] = chip[p.status] || chip.Pending;
+                return `
+                    <div class="bg-white/80 border border-brand-100 rounded-2xl p-3 space-y-2">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full border text-[10px] font-extrabold ${cls}">
+                                <i class="fa-solid ${icon}"></i><span>${label}</span>
+                            </span>
+                            <span class="text-[10px] text-slate-400">${escapeHTML(formatPostTime(p))}</span>
+                        </div>
+                        <p class="text-xs text-slate-600 line-clamp-2 whitespace-pre-line">${escapeHTML(p.content)}</p>
+                        ${p.status === 'Rejected' && p.reviewNote ? `<p class="text-[11px] text-red-600 bg-red-50 border border-red-100 rounded-lg px-2.5 py-1.5"><strong>SK note:</strong> ${escapeHTML(p.reviewNote)}</p>` : ''}
+                        ${p.status === 'Pending' ? `<button onclick="withdrawMyPost('${escapeHTML(p.id)}')" class="text-[11px] font-bold text-slate-500 hover:text-red-600 transition"><i class="fa-solid fa-rotate-left mr-1"></i>Withdraw</button>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleLike(id) {
+            const post = appData.freedomWall.find(p => p.id === id);
+            if (!post) return;
+            const liked = getLikedSet();
+            if (liked.has(id)) { liked.delete(id); post.likes = Math.max(0, (post.likes || 0) - 1); }
+            else { liked.add(id); post.likes = (post.likes || 0) + 1; }
+            try { localStorage.setItem(LIKED_KEY, JSON.stringify([...liked])); } catch (e) {}
+            saveAppData();
+            renderFreedomWallFeed();
+        }
+
+        function renderFreedomWallFeed() {
+            const container = document.getElementById('fw-feed-container');
+            const approvedPosts = appData.freedomWall.filter(p => p.status === 'Approved');
+            document.getElementById('fw-feed-count').textContent = `${approvedPosts.length} ${approvedPosts.length === 1 ? 'post' : 'posts'}`;
+
+            if (approvedPosts.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 space-y-2">
+                        <div class="w-14 h-14 mx-auto rounded-2xl bg-brand-100 text-brand-600 flex items-center justify-center text-xl"><i class="fa-solid fa-comment-dots"></i></div>
+                        <p class="text-sm font-semibold text-brand-950">No community posts yet</p>
+                        <p class="text-xs text-slate-500">Verified members can be the first to post!</p>
+                    </div>`;
+                return;
+            }
+
+            const liked = getLikedSet();
+            container.innerHTML = approvedPosts.map(post => {
+                const isLiked = liked.has(post.id);
+                return `
+                    <article class="post-card bg-white/85 p-4 rounded-2xl border border-brand-100 space-y-3 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-500/10 transition">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 to-fuchsia-500 flex items-center justify-center text-white font-bold text-sm shadow-md shadow-brand-500/30">
+                                    ${escapeHTML(post.author.charAt(0).toUpperCase())}
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-brand-950 flex items-center space-x-1.5">
+                                        <span>${escapeHTML(post.author)}</span>
+                                        ${post.authorId ? '<i class="fa-solid fa-circle-check text-brand-600 text-xs" title="Verified Youth ID Member"></i>' : ''}
+                                    </h4>
+                                    <span class="text-[10px] text-purple-600 font-bold uppercase tracking-wide">${escapeHTML(post.purok)}</span>
+                                </div>
+                            </div>
+                            <span class="text-[10px] text-slate-400">${escapeHTML(formatPostTime(post))}</span>
+                        </div>
+                        <p class="text-sm text-slate-700 leading-relaxed whitespace-pre-line">${escapeHTML(post.content)}</p>
+                        ${post.photoUrl ? `
+                            <div class="rounded-xl overflow-hidden max-h-64 border border-brand-100">
+                                <img onerror="imgFallback(this)" src="${escapeHTML(post.photoUrl)}" class="w-full h-full object-cover" alt="Community Attachment">
+                            </div>
+                        ` : ''}
+                        <div class="flex items-center justify-between pt-1">
+                            <button onclick="toggleLike('${escapeHTML(post.id)}')" class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full border text-xs font-bold transition ${isLiked ? 'text-pink-600 bg-pink-50 border-pink-200' : 'text-slate-500 border-brand-100 hover:text-pink-600 hover:border-pink-200'}">
+                                <i class="fa-${isLiked ? 'solid' : 'regular'} fa-heart"></i><span>${post.likes || 0}</span>
+                            </button>
+                            ${post.authorId ? '<span class="text-[10px] font-semibold text-brand-600">Verified Youth ID Member</span>' : ''}
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+
+        /* SK OFFICIALS DIRECTORY RENDER */
+        function renderSKOfficials() {
+            const grid = document.getElementById('sk-officials-grid');
+            grid.innerHTML = '';
+
+            appData.officials.forEach(off => {
+                grid.innerHTML += `
+                    <div class="glass-card p-5 rounded-2xl border border-brand-500/20 text-center space-y-3 group hover:border-brand-500/50 transition duration-300">
+                        <div class="relative w-24 h-24 mx-auto rounded-2xl overflow-hidden border-2 border-brand-500/40 shadow-lg group-hover:scale-105 transition-transform">
+                            <img onerror="imgFallback(this)" src="${off.photoUrl}" class="w-full h-full object-cover" alt="${off.name}">
+                        </div>
+                        <div>
+                            <span class="inline-block px-2.5 py-0.5 rounded-full bg-brand-500/10 text-brand-700 text-[10px] font-extrabold uppercase tracking-wide border border-brand-500/20 mb-1">
+                                ${off.position}
+                            </span>
+                            <h3 class="font-bold text-brand-950 text-sm">${off.name}</h3>
+                            <p class="text-[11px] text-slate-500 mt-0.5">${off.committee || 'SK Council Member'}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        /* EVENTS & ANNOUNCEMENTS RENDER */
+        function renderEventsFeed() {
+            const grid = document.getElementById('events-feed-grid');
+            grid.innerHTML = '';
+
+            if (appData.events.length === 0) {
+                grid.innerHTML = `<p class="text-xs text-slate-500 col-span-3 py-6 text-center">No announcements published at the moment.</p>`;
+                return;
+            }
+
+            appData.events.forEach(ev => {
+                grid.innerHTML += `
+                    <div class="glass-card rounded-2xl border border-brand-500/20 overflow-hidden space-y-3 flex flex-col justify-between">
+                        <div>
+                            ${ev.imageUrl ? `
+                                <div class="h-40 w-full overflow-hidden bg-white">
+                                    <img onerror="imgFallback(this)" src="${ev.imageUrl}" class="w-full h-full object-cover hover:scale-105 transition duration-500" alt="${ev.title}" data-ph="banner">
+                                </div>
+                            ` : ''}
+                            <div class="p-5 space-y-2">
+                                <div class="flex items-center space-x-2 text-[11px] text-brand-700 font-bold">
+                                    <i class="fa-solid fa-calendar-day"></i>
+                                    <span>${ev.date}</span>
+                                </div>
+                                <h3 class="font-extrabold text-brand-950 text-base leading-snug">${ev.title}</h3>
+                                <p class="text-xs text-slate-500 leading-relaxed">${ev.desc}</p>
+                            </div>
+                        </div>
+                        <div class="px-5 pb-5 pt-0 border-t border-brand-100/60 mt-auto flex items-center justify-between text-xs text-slate-500 pt-3">
+                            <span class="flex items-center space-x-1">
+                                <i class="fa-solid fa-location-dot text-red-500"></i>
+                                <span>${ev.location}</span>
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderHomeEvents() {
+            const container = document.getElementById('home-events-container');
+            if (!container) return;
+            const topEvents = appData.events.slice(0, 2);
+            container.innerHTML = '';
+
+            topEvents.forEach(ev => {
+                container.innerHTML += `
+                    <div class="bg-white/80 p-4 rounded-xl border border-brand-100 space-y-1.5">
+                        <span class="text-[10px] font-bold text-brand-600 uppercase">${ev.date}</span>
+                        <h4 class="font-bold text-brand-950 text-xs">${ev.title}</h4>
+                        <p class="text-[11px] text-slate-500 line-clamp-2">${ev.desc}</p>
+                    </div>
+                `;
+            });
+        }
+
+        /* SK ADMIN AUTH & DASHBOARD LOGIC */
+        let isAdminLoggedIn = false;
+
+        function checkAdminLogin() {
+            const pass = document.getElementById('admin-pass-input').value;
+            if (pass === 'admin123' || pass === 'admin') {
+                isAdminLoggedIn = true;
+                document.getElementById('admin-login-box').classList.add('hidden');
+                document.getElementById('admin-dashboard-content').classList.remove('hidden');
+                updateAdminDashboardView();
+            } else {
+                alert("Incorrect Admin Security Password. Access Denied.");
+            }
+        }
+
+        function adminLogout() {
+            isAdminLoggedIn = false;
+            document.getElementById('admin-login-box').classList.remove('hidden');
+            document.getElementById('admin-dashboard-content').classList.add('hidden');
+            document.getElementById('admin-pass-input').value = '';
+        }
+
+        function switchAdminTab(subtab) {
+            document.querySelectorAll('.admin-subcontent').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`admintab-${subtab}`);
+            if (target) target.classList.remove('hidden');
+
+            // Reset tab button highlight
+            ['pending', 'approved', 'officials-edit', 'events-edit', 'freedom-edit'].forEach(st => {
+                const btn = document.getElementById(`subnav-${st}`);
+                if (btn) {
+                    btn.classList.remove('text-brand-600', 'border-b-2', 'border-brand-500');
+                    btn.classList.add('text-slate-500');
+                }
+            });
+
+            const activeBtn = document.getElementById(`subnav-${subtab}`);
+            if (activeBtn) {
+                activeBtn.classList.add('text-brand-600', 'border-b-2', 'border-brand-500');
+                activeBtn.classList.remove('text-slate-500');
+            }
+
+            updateAdminDashboardView();
+        }
+
+        function updateAdminDashboardView() {
+            const pendingList = appData.registrations.filter(r => r.status === 'Pending');
+            const approvedList = appData.registrations.filter(r => r.status === 'Approved');
+
+            document.getElementById('count-pending').innerText = pendingList.length;
+            document.getElementById('count-approved').innerText = approvedList.length;
+
+            renderAdminPending(pendingList);
+            renderAdminApproved(approvedList);
+            renderAdminOfficialsList();
+            renderAdminEventsList();
+            renderAdminFWQueue();
+        }
+
+        /* ADMIN APPROVAL PROCESS WORKFLOW */
+        function renderAdminPending(list) {
+            const container = document.getElementById('pending-list-container');
+            if (list.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 py-6 text-center">No pending Youth ID registrations requiring approval.</p>`;
+                return;
+            }
+
+            let html = '';
+            list.forEach(item => {
+                html += `
+                    <div class="glass-card p-4 rounded-2xl border border-amber-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div class="flex items-center space-x-3">
+                            <img onerror="imgFallback(this)" src="${item.photoUrl}" class="w-12 h-12 rounded-xl object-cover border border-brand-200" alt="Applicant Photo">
+                            <div>
+                                <h4 class="text-sm font-bold text-brand-950 uppercase">${item.fname} ${item.mname ? item.mname + ' ' : ''}${item.lname}</h4>
+                                <p class="text-xs text-slate-500">Purok: <strong class="text-brand-700">${item.purok}</strong> • Age: ${item.age} • Category: ${item.youthClass}</p>
+                                <p class="text-[10px] text-slate-500 font-mono mt-0.5">Track Code: ${item.trackingCode} • Submitted: ${item.timestamp}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-2 w-full md:w-auto">
+                            <button onclick="approveRegistration('${item.id}')" class="flex-1 md:flex-initial px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition shadow-md flex items-center justify-center space-x-1">
+                                <i class="fa-solid fa-check"></i>
+                                <span>Approve ID</span>
+                            </button>
+                            <button onclick="rejectRegistration('${item.id}')" class="flex-1 md:flex-initial px-3 py-2 bg-red-600/20 hover:bg-red-600/30 text-red-600 border border-red-500/30 font-semibold text-xs rounded-xl transition">
+                                Reject
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderAdminApproved(list) {
+            const container = document.getElementById('approved-list-container');
+            if (list.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 py-6 text-center">No approved registrations yet.</p>`;
+                return;
+            }
+
+            let html = '';
+            list.forEach(item => {
+                html += `
+                    <div class="glass-card p-4 rounded-2xl border border-brand-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div class="flex items-center space-x-3">
+                            <img onerror="imgFallback(this)" src="${item.photoUrl}" class="w-12 h-12 rounded-xl object-cover border border-emerald-500/40" alt="Applicant">
+                            <div>
+                                <h4 class="text-sm font-bold text-brand-950 uppercase">${item.fname} ${item.mname ? item.mname + ' ' : ''}${item.lname}</h4>
+                                <p class="text-xs text-slate-500">ID: <strong class="text-brand-700 font-mono">${item.id}</strong> • Purok: ${item.purok}</p>
+                            </div>
+                        </div>
+                        <button onclick="renderAndShowDigitalID('${item.id}')" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs rounded-xl transition shadow-md flex items-center space-x-1.5">
+                            <i class="fa-solid fa-id-card"></i>
+                            <span>View Digital ID</span>
+                        </button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function approveRegistration(id) {
+            const item = appData.registrations.find(r => r.id === id);
+            if (!item) return;
+            item.status = 'Approved';
+            saveAppData();
+            updateAdminDashboardView();
+            alert(`Approved registration for ${item.fname} ${item.lname}. Official ID is now generated and viewable.`);
+        }
+
+        function rejectRegistration(id) {
+            const item = appData.registrations.find(r => r.id === id);
+            if (!item) return;
+            if (confirm(`Are you sure you want to reject registration for ${item.fname} ${item.lname}?`)) {
+                item.status = 'Rejected';
+                saveAppData();
+                updateAdminDashboardView();
+            }
+        }
+
+        /* ADMIN EDIT OFFICIALS LOGIC */
+        function handleSaveOfficial(e) {
+            e.preventDefault();
+            const form = e.target;
+            const position = document.getElementById('off-position').value.trim();
+            const name = document.getElementById('off-name').value.trim();
+            const committee = document.getElementById('off-committee').value.trim();
+            const file = document.getElementById('off-photo-file').files[0];
+
+            const finish = (photoUrl) => {
+                const newOff = {
+                    id: 'off-' + Date.now(),
+                    position: position,
+                    name: name,
+                    committee: committee,
+                    photoUrl: photoUrl || ''
+                };
+                appData.officials.push(newOff);
+                if (!saveAppData()) { appData.officials.pop(); return; }
+                form.reset();
+                updateAdminDashboardView();
+                showToast(`SK official added: ${name}`, 'success');
+            };
+
+            if (file) {
+                readImageFile(file, 480, url => {
+                    finish(url || '');
+                    if (!url) showToast('The photo could not be processed, so the official was saved with a default picture. Try a smaller JPG or PNG.', 'error');
+                });
+            } else {
+                finish('');
+            }
+        }
+
+        function deleteOfficial(id) {
+            if (confirm("Remove this official from council directory?")) {
+                appData.officials = appData.officials.filter(o => o.id !== id);
+                saveAppData();
+                updateAdminDashboardView();
+            }
+        }
+
+        function renderAdminOfficialsList() {
+            const container = document.getElementById('admin-officials-list');
+            container.innerHTML = '';
+            appData.officials.forEach(off => {
+                container.innerHTML += `
+                    <div class="bg-violet-50 p-3 rounded-xl border border-brand-100 flex items-center justify-between">
+                        <div class="flex items-center space-x-2.5">
+                            <img onerror="imgFallback(this)" src="${off.photoUrl}" class="w-10 h-10 rounded-lg object-cover">
+                            <div>
+                                <h5 class="text-xs font-bold text-brand-950">${off.name}</h5>
+                                <p class="text-[10px] text-brand-700 font-semibold">${off.position}</p>
+                            </div>
+                        </div>
+                        <button onclick="deleteOfficial('${off.id}')" class="text-red-500 hover:text-red-700 p-1 text-xs">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        /* ADMIN EVENTS LOGIC */
+        function handleSaveEvent(e) {
+            e.preventDefault();
+            const form = e.target;
+            const title = document.getElementById('ev-title').value.trim();
+            const date = document.getElementById('ev-date').value.trim();
+            const location = document.getElementById('ev-location').value.trim();
+            const desc = document.getElementById('ev-desc').value.trim();
+            const file = document.getElementById('ev-image-file').files[0];
+
+            const finish = (imgUrl) => {
+                const newEv = {
+                    id: 'ev-' + Date.now(),
+                    title: title,
+                    date: date,
+                    location: location,
+                    desc: desc,
+                    imageUrl: imgUrl || '',
+                    timestamp: new Date().toLocaleDateString()
+                };
+                appData.events.unshift(newEv);
+                if (!saveAppData()) { appData.events.shift(); return; }
+                form.reset();
+                updateAdminDashboardView();
+                showToast('Announcement published!', 'success');
+            };
+
+            if (file) {
+                readImageFile(file, 900, url => {
+                    finish(url || '');
+                    if (!url) showToast('The banner could not be processed, so the announcement was published with a default banner. Try a smaller JPG or PNG.', 'error');
+                });
+            } else {
+                finish('');
+            }
+        }
+
+        function deleteEvent(id) {
+            if (confirm("Delete this announcement?")) {
+                appData.events = appData.events.filter(e => e.id !== id);
+                saveAppData();
+                updateAdminDashboardView();
+            }
+        }
+
+        function renderAdminEventsList() {
+            const container = document.getElementById('admin-events-list');
+            container.innerHTML = '';
+            appData.events.forEach(ev => {
+                container.innerHTML += `
+                    <div class="bg-violet-50 p-3 rounded-xl border border-brand-100 flex items-center justify-between">
+                        <div>
+                            <h5 class="text-xs font-bold text-brand-950">${ev.title}</h5>
+                            <p class="text-[10px] text-slate-500">${ev.date} • ${ev.location}</p>
+                        </div>
+                        <button onclick="deleteEvent('${ev.id}')" class="text-red-500 hover:text-red-700 p-1 text-xs">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        /* ADMIN: KABATAAN CORNER POST APPROVAL QUEUE */
+        function setAdminFWFilter(f) {
+            adminFWFilter = f;
+            renderAdminFWQueue();
+        }
+
+        function renderAdminFWQueue() {
+            const container = document.getElementById('admin-fw-queue');
+            const all = appData.freedomWall;
+            const counts = {
+                Pending: all.filter(p => p.status === 'Pending').length,
+                Approved: all.filter(p => p.status === 'Approved').length,
+                Rejected: all.filter(p => p.status === 'Rejected').length,
+                All: all.length
+            };
+
+            // badge on the admin sub-tab
+            const badge = document.getElementById('count-fw-pending');
+            if (badge) badge.textContent = counts.Pending;
+
+            // filter pills
+            const labels = { Pending: 'Pending', Approved: 'Published', Rejected: 'Declined', All: 'All' };
+            document.getElementById('fw-admin-filters').innerHTML = Object.keys(labels).map(k => `
+                <button onclick="setAdminFWFilter('${k}')" class="px-3 py-1.5 rounded-lg transition ${adminFWFilter === k ? 'bg-white text-brand-700 shadow' : 'text-slate-500 hover:text-brand-700'}">
+                    ${labels[k]} (${counts[k]})
+                </button>
+            `).join('');
+
+            const posts = adminFWFilter === 'All' ? all : all.filter(p => p.status === adminFWFilter);
+            if (posts.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 py-6 text-center">${adminFWFilter === 'Pending' ? 'No posts waiting for approval. All caught up!' : 'No posts in this view.'}</p>`;
+                return;
+            }
+
+            const chip = {
+                Pending: 'bg-amber-50 text-amber-700 border-amber-200',
+                Approved: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                Rejected: 'bg-red-50 text-red-600 border-red-200'
+            };
+            const chipLabel = { Pending: 'PENDING', Approved: 'PUBLISHED', Rejected: 'DECLINED' };
+
+            container.innerHTML = posts.map(post => {
+                const id = escapeHTML(post.id);
+                return `
+                    <div class="glass-card p-4 rounded-2xl flex flex-col md:flex-row md:items-start justify-between gap-4">
+                        <div class="space-y-2 min-w-0 flex-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <h5 class="text-sm font-bold text-brand-950">${escapeHTML(post.author)} <span class="text-slate-400 font-medium">(${escapeHTML(post.purok)})</span></h5>
+                                <span class="px-2 py-0.5 rounded-full border text-[10px] font-extrabold ${chip[post.status] || chip.Pending}">${chipLabel[post.status] || post.status}</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400 font-mono">${post.authorId ? 'Youth ID: ' + escapeHTML(post.authorId) : 'Legacy post (no Youth ID)'} • ${escapeHTML(formatPostTime(post))}</p>
+                            <p class="text-xs text-slate-700 leading-relaxed whitespace-pre-line">${escapeHTML(post.content)}</p>
+                            ${post.photoUrl ? `<img onerror="imgFallback(this)" src="${escapeHTML(post.photoUrl)}" class="w-28 h-20 object-cover rounded-xl border border-brand-100" alt="Attachment">` : ''}
+                            ${post.status === 'Rejected' && post.reviewNote ? `<p class="text-[11px] text-red-600"><strong>Reason given:</strong> ${escapeHTML(post.reviewNote)}</p>` : ''}
+                        </div>
+                        <div class="flex items-center gap-2 md:flex-col md:items-stretch md:w-32 shrink-0">
+                            ${post.status !== 'Approved' ? `
+                                <button onclick="approveFWPost('${id}')" class="flex-1 px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition shadow-md flex items-center justify-center space-x-1">
+                                    <i class="fa-solid fa-check"></i><span>Approve</span>
+                                </button>` : ''}
+                            ${post.status !== 'Rejected' ? `
+                                <button onclick="rejectFWPost('${id}')" class="flex-1 px-3 py-2 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-semibold text-xs rounded-xl transition">
+                                    ${post.status === 'Approved' ? 'Take down' : 'Decline'}
+                                </button>` : ''}
+                            <button onclick="deleteFWPost('${id}')" class="px-3 py-2 text-slate-400 hover:text-red-600 text-xs rounded-xl transition" title="Delete permanently">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function approveFWPost(id) {
+            const post = appData.freedomWall.find(p => p.id === id);
+            if (!post) return;
+            post.status = 'Approved';
+            post.reviewNote = '';
+            post.reviewedAt = Date.now();
+            saveAppData();
+            updateAdminDashboardView();
+        }
+
+        function rejectFWPost(id) {
+            const post = appData.freedomWall.find(p => p.id === id);
+            if (!post) return;
+            const reason = prompt('Reason for declining (optional, shown to the member):', '');
+            if (reason === null) return;
+            post.status = 'Rejected';
+            post.reviewNote = reason.trim();
+            post.reviewedAt = Date.now();
+            saveAppData();
+            updateAdminDashboardView();
+        }
+
+        function deleteFWPost(id) {
+            if (confirm("Permanently delete this post?")) {
+                appData.freedomWall = appData.freedomWall.filter(p => p.id !== id);
+                saveAppData();
+                updateAdminDashboardView();
+            }
+        }
+
+        /* HOME PAGE LIVE STATS */
+        function animateCount(el, to) {
+            if (!el) return;
+            const from = parseInt(el.textContent) || 0;
+            const t0 = performance.now();
+            const dur = 800;
+            function step(t) {
+                const p = Math.min((t - t0) / dur, 1);
+                el.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3)));
+                if (p < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
+        function updateHomeStats() {
+            animateCount(document.getElementById('stat-members'), appData.registrations.filter(r => r.status === 'Approved').length);
+            animateCount(document.getElementById('stat-events'), appData.events.length);
+            animateCount(document.getElementById('stat-posts'), appData.freedomWall.filter(p => p.status === 'Approved').length);
+        }
+
+        /* INITIALIZATION ON DOM LOAD */
+        window.addEventListener('DOMContentLoaded', () => {
+            loadAppData();
+            try { cornerMemberId = sessionStorage.getItem(CORNER_SESSION_KEY); } catch (e) {}
+            switchTab('home');
+        });
+    </script>
+</body>
+</html>
